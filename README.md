@@ -96,7 +96,7 @@ if (false !== ($lastId = QuickPdo::insert('mytable', [
 
 ### Delete
    
-Showing different forms of [whereConds](https://github.com/lingtalfi/universe/blob/master/planets/QuickPdo/README.md) (second argument)
+Showing different forms of [whereConds](https://github.com/lingtalfi/QuickPdo) (second argument)
   
 ```php
 
@@ -273,7 +273,7 @@ Friends
 -----------
   
 If your intention is to display table results inside terminal, you might want to checkout
-the [MysqlTabular Tool](https://github.com/lingtalfi/universe/tree/master/planets/MysqlTabular).
+the [MysqlTabular Tool](https://github.com/lingtalfi/MysqlTabular).
 
 
 
