@@ -312,3 +312,15 @@ Then the results will look like this on the console:
 
 
  
+ 
+ 
+History Log
+------------------
+    
+- 1.0.0 -- 2015-10-04
+
+    - initial commit
+    
+     
+ 
+ 
