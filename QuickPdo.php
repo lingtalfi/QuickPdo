@@ -247,7 +247,7 @@ class QuickPdo
                             $first = false;
                         }
                         else {
-                            $stmt .= ',';
+                            $stmt .= ' and ';
                         }
                         $stmt .= $field . ' ' . $op . ' :' . $mk . $mkCpt;
                         $markers[':' . $mk . $mkCpt] = $val;
