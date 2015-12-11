@@ -18,6 +18,16 @@ class QuickPdo
      */
     private static $conn;
     private static $stmt;
+    /**
+     * @var array containing statement/connection errors
+     * The format is:
+     *      - 0: SQLSTATE error code
+     *      - 1: Driver-specific error code
+     *      - 2: Driver-specific error message
+     *      - 3: this class' method name
+     *
+     */
+    private static $errors = [];
 
     public static function setConnection($dsn, $user, $pass, array $options)
     {
@@ -50,6 +60,12 @@ class QuickPdo
      * @return false|int, last insert id
      * Errors are accessible via a getError method
      *
+     * Common errors are:
+     * - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'dddescription'
+     * - SQLSTATE[42S02]: Base table or view not found: 1146 Table 'calendar.the_ev' doesn't exist
+     * - SQLSTATE[HY000]: General error: 1364 Field 'end_date' doesn't have a default value
+     *
+     *
      */
     public static function insert($table, array $fields)
     {
@@ -74,6 +90,7 @@ class QuickPdo
         if (true === $query->execute($markers)) {
             return $pdo->lastInsertId();
         }
+        self::handleStatementErrors($query, 'insert');
         return false;
     }
 
@@ -111,6 +128,14 @@ class QuickPdo
      *
      *
      *
+     *
+     * Common errors are:
+     * - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax;
+     * - SQLSTATE[42S02]: Base table or view not found: 1146 Table 'calendar.the_ev' doesn't exist
+     * - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'dddescription'
+     *
+     *
+     *
      */
     public static function update($table, array $fields, $whereConds, array $extraMarkers = [])
     {
@@ -137,6 +162,7 @@ class QuickPdo
         if (true === $query->execute($markers)) {
             return true;
         }
+        self::handleStatementErrors($query, 'update');
         return false;
     }
 
@@ -144,6 +170,11 @@ class QuickPdo
     /**
      * Returns false|int, the number of deleted rows
      * For whereConds format, see update method.
+     *
+     * Common errors are:
+     * - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax;
+     * - SQLSTATE[42S02]: Base table or view not found: 1146 Table 'calendar.the_ev' doesn't exist
+     * - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'dddescription'
      */
     public static function delete($table, array $whereConds = [])
     {
@@ -157,12 +188,18 @@ class QuickPdo
         if (true === $query->execute($markers)) {
             return $query->rowCount();
         }
+        self::handleStatementErrors($query, 'delete');
         return false;
     }
 
 
     /**
      * Returns false|array
+     *
+     * Common errors are:
+     * - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax;
+     * - SQLSTATE[42S02]: Base table or view not found: 1146 Table 'calendar.the_ev' doesn't exist
+     * - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'dddescription'
      */
     public static function fetchAll($stmt, array $markers = [])
     {
@@ -172,12 +209,18 @@ class QuickPdo
         if (true === $query->execute($markers)) {
             return $query->fetchAll(\PDO::FETCH_ASSOC);
         }
+        self::handleStatementErrors($query, 'fetchAll');
         return false;
     }
 
 
     /**
      * Returns false|array
+     *
+     * Common errors are:
+     * - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax;
+     * - SQLSTATE[42S02]: Base table or view not found: 1146 Table 'calendar.the_ev' doesn't exist
+     * - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'dddescription'
      */
     public static function fetch($stmt, array $markers = [])
     {
@@ -187,6 +230,7 @@ class QuickPdo
         if (true === $query->execute($markers)) {
             return $query->fetch(\PDO::FETCH_ASSOC);
         }
+        self::handleStatementErrors($query, 'fetch');
         return false;
     }
 
@@ -195,6 +239,11 @@ class QuickPdo
      * Executes a PDO->exec and returns the number of affected lines.
      *
      * @return false|int, the number of affected rows
+     *
+     *
+     * Common errors:
+     * - SQLSTATE[42000]: Syntax error or access violation: 1049 Unknown database 'pou'
+     *
      */
     public static function freeExec($stmt)
     {
@@ -203,6 +252,7 @@ class QuickPdo
         if (false !== $r = $pdo->exec($stmt)) {
             return $r;
         }
+        self::handleConnectionErrors($pdo, 'freeExec');
         return false;
     }
 
@@ -221,9 +271,22 @@ class QuickPdo
         if (true === $query->execute($markers)) {
             return $query->rowCount();
         }
+        self::handleStatementErrors($query, 'freeStmt');
         return false;
     }
 
+    //------------------------------------------------------------------------------/
+    // 
+    //------------------------------------------------------------------------------/
+    public static function getErrors()
+    {
+        return self::$errors;
+    }
+
+    public static function getLastError()
+    {
+        return self::$errors[count(self::$errors) - 1];
+    }
 
 
 
@@ -266,6 +329,20 @@ class QuickPdo
         }
         elseif (is_string($whereConds)) {
             $stmt .= ' where ' . $whereConds;
+        }
+    }
+
+    private static function handleStatementErrors(\PDOStatement $query, $methodName)
+    {
+        if (0 !== (int)$query->errorInfo()[1]) {
+            self::$errors[] = array_merge($query->errorInfo(), [$methodName]);
+        }
+    }
+
+    private static function handleConnectionErrors(\PDO $conn, $methodName)
+    {
+        if (0 !== (int)$conn->errorInfo()[1]) {
+            self::$errors[] = array_merge($conn->errorInfo(), [$methodName]);
         }
     }
 }

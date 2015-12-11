@@ -317,6 +317,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.1.0 -- 2015-12-11
+
+    - add possibility to retrieve errors manually (to work with PDO_ERRMODE_SILENT for instance)
+    
 - 1.0.1 -- 2015-11-07
 
     - fix bug: incorrect where clause
