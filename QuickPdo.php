@@ -13,6 +13,8 @@ class QuickPdo
 {
 
 
+    public static $fetchStyle = \PDO::FETCH_ASSOC;
+    
     /**
      * @var \PDO
      */
@@ -207,7 +209,7 @@ class QuickPdo
         self::$stmt = $stmt;
         $query = $pdo->prepare($stmt);
         if (true === $query->execute($markers)) {
-            return $query->fetchAll(\PDO::FETCH_ASSOC);
+            return $query->fetchAll(self::$fetchStyle);
         }
         self::handleStatementErrors($query, 'fetchAll');
         return false;
@@ -228,7 +230,7 @@ class QuickPdo
         self::$stmt = $stmt;
         $query = $pdo->prepare($stmt);
         if (true === $query->execute($markers)) {
-            return $query->fetch(\PDO::FETCH_ASSOC);
+            return $query->fetch(self::$fetchStyle);
         }
         self::handleStatementErrors($query, 'fetch');
         return false;

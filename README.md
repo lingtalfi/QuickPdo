@@ -317,6 +317,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.2.0 -- 2015-12-16
+
+    - add possibility to change fetch style
+        
 - 1.1.0 -- 2015-12-11
 
     - add possibility to retrieve errors manually (to work with PDO_ERRMODE_SILENT for instance)
