@@ -317,6 +317,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.3.0 -- 2015-12-21
+
+    - update and delete methods use same where polymorphic argument
+    
 - 1.2.0 -- 2015-12-16
 
     - add possibility to change fetch style

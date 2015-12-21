@@ -14,7 +14,7 @@ class QuickPdo
 
 
     public static $fetchStyle = \PDO::FETCH_ASSOC;
-    
+
     /**
      * @var \PDO
      */
@@ -139,9 +139,8 @@ class QuickPdo
      *
      *
      */
-    public static function update($table, array $fields, $whereConds, array $extraMarkers = [])
+    public static function update($table, array $fields, $whereConds = [], array $extraMarkers = [])
     {
-
         $pdo = self::getConnection();
         $stmt = 'update ' . $table . ' set ';
         $markers = [];
@@ -178,7 +177,7 @@ class QuickPdo
      * - SQLSTATE[42S02]: Base table or view not found: 1146 Table 'calendar.the_ev' doesn't exist
      * - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'dddescription'
      */
-    public static function delete($table, array $whereConds = [])
+    public static function delete($table, $whereConds = [])
     {
 
         $pdo = self::getConnection();
