@@ -11,8 +11,9 @@ What is it?
 
 
 It's a static class that contains basic methods to interact with a mysql database via pdo.
- 
- 
+
+
+
 What's the benefit?
 ------------------------
 
@@ -20,7 +21,12 @@ What's the benefit?
 - it automatically creates prepared parameters (sql injection safe) for insert, update, when it makes sense to do so 
 - it shortens the mysql query a bit 
  
- 
+
+
+Setup
+---------
+
+QuickPdo can be installed as a [planet](https://github.com/lingtalfi/Observer/blob/master/article/article.planetReference.eng.md).
  
  
 How to use
@@ -220,6 +226,7 @@ bool        |    update ( table, array fields, whereConds, extraMarkers?)    | /
 false\|int   |    delete ( table, whereConds)                                 | // Returns the number of deleted entries in case of success
 false\|array  |   fetchAll ( stmt, array markers?)                            | // Returns the rows in case of success
 false\|array   |  fetch ( stmt, array markers?)                               | // Returns a single row in case of success
+false\|\PDOStatement     |  freeQuery( stmt, array markers?)                  | // Returns the \PDOStatement query in case of success
 false\|int     |  freeStmt( stmt, array markers?)                             | // Returns the number of affected lines in case of success
 false\|int    |   freeExec( stmt )                                            | // Returns the number of affected lines in case of success
                                                                             // This is not a prepared request, it calls pdo->exec directly
@@ -239,6 +246,26 @@ Access the last executed stmt
 ```
 
 
+
+Error handling
+---------------
+
+As you all know, [PDO has three error modes](http://php.net/manual/en/pdo.error-handling.php):
+
+- PDO::ERRMODE_SILENT
+- PDO::ERRMODE_WARNING
+- PDO::ERRMODE_EXCEPTION
+
+
+Typically, you will define the error mode once upon the QuickPdo's initialization, as explained in
+the ["How to use" section](https://github.com/lingtalfi/QuickPdo/blob/master/README.md#how-to-use) of this document.
+
+The PDO error mode affects all (almost) QuickPdo's methods behaviour in case of failure:
+
+- if you use the exception error mode, QuickPdo won't try to catch them
+- however if you use the silent or warning mode, QuickPdo will store the errors for later retrieval.
+        So that if you need to access the errors, you can use the
+        QuickPdo::getErrors or QuickPdo::getLastError methods.
 
 
 
@@ -267,7 +294,16 @@ try {
 
 
 
- 
+
+Want more?
+--------------
+
+Since 1.4.0, we now have QuickPdoInfoTool, which adds a few method to the QuickPdo arsenal.
+Check the [QuickPdoInfoTool documentation](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md).
+
+
+
+
  
 Friends
 -----------
@@ -317,6 +353,11 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.4.0 -- 2015-12-28
+
+    - add QuickPdoInfoTool
+    - add QuickPdo::freeQuery method
+
 - 1.3.0 -- 2015-12-21
 
     - update and delete methods use same where polymorphic argument

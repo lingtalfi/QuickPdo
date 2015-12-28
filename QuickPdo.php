@@ -54,7 +54,6 @@ class QuickPdo
     }
 
 
-
     //------------------------------------------------------------------------------/
     // 
     //------------------------------------------------------------------------------/
@@ -77,8 +76,7 @@ class QuickPdo
         foreach ($fields as $k => $v) {
             if (true === $first) {
                 $first = false;
-            }
-            else {
+            } else {
                 $stmt .= ',';
             }
             $stmt .= $k . '=:' . $k;
@@ -148,8 +146,7 @@ class QuickPdo
         foreach ($fields as $k => $v) {
             if (true === $first) {
                 $first = false;
-            }
-            else {
+            } else {
                 $stmt .= ',';
             }
             $stmt .= $k . '=:' . $k;
@@ -259,6 +256,22 @@ class QuickPdo
 
 
     /**
+     * Execute a PDOStatement->execute and returns it.
+     * @return false|\PDOStatement
+     */
+    public static function freeQuery($stmt, array $markers = [])
+    {
+        $pdo = self::getConnection();
+        self::$stmt = $stmt;
+        $query = $pdo->prepare($stmt);
+        if (true === $query->execute($markers)) {
+            return $query;
+        }
+        self::handleStatementErrors($query, 'freeStmt');
+        return false;
+    }
+
+    /**
      * Execute a PDOStatement->execute and returns the number of affected rows.
      *
      *
@@ -290,7 +303,6 @@ class QuickPdo
     }
 
 
-
     //------------------------------------------------------------------------------/
     //
     //------------------------------------------------------------------------------/
@@ -309,8 +321,7 @@ class QuickPdo
                         $val2 = (isset($cond[3])) ? $cond[3] : null;
                         if (true === $first) {
                             $first = false;
-                        }
-                        else {
+                        } else {
                             $stmt .= ' and ';
                         }
                         $stmt .= $field . ' ' . $op . ' :' . $mk . $mkCpt;
@@ -321,14 +332,12 @@ class QuickPdo
                             $markers[':' . $mk . $mkCpt] = $val2;
                             $mkCpt++;
                         }
-                    }
-                    elseif (is_string($cond)) {
+                    } elseif (is_string($cond)) {
                         $stmt .= $cond;
                     }
                 }
             }
-        }
-        elseif (is_string($whereConds)) {
+        } elseif (is_string($whereConds)) {
             $stmt .= ' where ' . $whereConds;
         }
     }
