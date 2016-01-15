@@ -15,16 +15,20 @@ $a = [
         'the_name' => 'paul',
         'type' => '3',
     ]],
+    ["select * from mytable", [
+        'the_name' => 'paul',
+        'type' => null,
+    ]],
 ];
 
 $b = [
-    [
-        'select * from mytable where the_name = :bzz_0 and type = :bzz_1',
-        [
-            ':bzz_0' => 'paul',
-            ':bzz_1' => '3',
-        ],
-    ],
+    ['select * from mytable where the_name = :bzz_0 and type = :bzz_1', [
+        ':bzz_0' => 'paul',
+        ':bzz_1' => '3',
+    ]],
+    ['select * from mytable where the_name = :bzz_0 and type is null', [
+        ':bzz_0' => 'paul',
+    ]],
 ];
 
 

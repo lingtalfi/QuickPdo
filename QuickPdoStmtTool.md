@@ -15,10 +15,13 @@ It's a companion for the [QuickPdo](https://github.com/lingtalfi/QuickPdo) tool 
 
  
  
-Why should I use it?
+When should I use it?
 ---------------
 
 It lets you create prepared queries style WHERE clause easily. 
+
+
+
 
 
 
@@ -161,6 +164,48 @@ array (size=0)
 ```
 
 
+##### whereConds with glue and null value example
+
+```php
+<?php
+
+
+use QuickPdo\QuickPdoStmtTool;
+
+require_once "bigbang.php"; // start the local universe 
+
+//------------------------------------------------------------------------------/
+// WHERE CONDS EXAMPLE
+//------------------------------------------------------------------------------/
+$stmt = "select * from mytable";
+$where = [
+    ['id','>=', 6],
+    ['the_name','like', 'maurice'],
+    ['type','=', null],
+    ['salary','between', 1500, 3000],
+];
+$markers=[];
+QuickPdoStmtTool::addWhereSubStmt($where, $stmt, $markers);
+a($stmt);
+az($markers);
+
+```
+
+The output will be:
+
+```abap
+string 'select * from mytable where id >= :bzz_0 and the_name like :bzz_1 and type is null and salary between :bzz_2 and :bzz_3' (length=119)
+
+array (size=4)
+  ':bzz_0' => int 6
+  ':bzz_1' => string 'maurice' (length=7)
+  ':bzz_2' => int 1500
+  ':bzz_3' => int 3000
+
+
+```
+
+
 
 
 ### addWhereEqualsSubStmt
@@ -173,7 +218,7 @@ void function addWhereEqualsSubStmt ( array:keys2Values, &str:stmt, &array:$mark
 This method adds the WHERE clause to your statement, but using only the **equal operator**.
 
 
-Example:
+#### basic example
 
 
 ```php
@@ -220,6 +265,45 @@ array (size=4)
   ':bzz_1' => string 'maurice' (length=7)
   ':bzz_2' => int 1500
   ':bzz_3' => int 3000
+
+```
+
+
+
+#### example with null value
+
+
+```php
+<?php
+
+
+use QuickPdo\QuickPdoStmtTool;
+
+require_once "bigbang.php"; // start the local universe 
+
+
+$stmt = "select * from mytable";
+$keys2Values = [
+    'the_name' => 'paul',
+    'type' => null,
+];
+$markers = [];
+QuickPdoStmtTool::addWhereEqualsSubStmt($keys2Values, $stmt, $markers);
+a($stmt);
+a($markers);
+
+
+```
+
+
+The output will be:
+
+
+```abap
+string 'select * from mytable where the_name = :bzz_0 and type is null' (length=62)
+
+array (size=1)
+  ':bzz_0' => string 'paul' (length=4)
 
 ```
 

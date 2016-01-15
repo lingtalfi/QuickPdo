@@ -77,9 +77,18 @@ class QuickPdoStmtTool
                                 $stmt .= ' and ';
                             }
                         }
-                        $stmt .= $field . ' ' . $op . ' :' . $mk . $mkCpt;
-                        $markers[':' . $mk . $mkCpt] = $val;
-                        $mkCpt++;
+
+
+                        if (null !== $val) {
+                            $stmt .= $field . ' ' . $op . ' :' . $mk . $mkCpt;
+                            $markers[':' . $mk . $mkCpt] = $val;
+                            $mkCpt++;
+                        }
+                        else{
+                            $stmt .= $field . ' is null';
+                        }
+
+
                         if ('between' === $op) {
                             $stmt .= ' and :' . $mk . $mkCpt;
                             $markers[':' . $mk . $mkCpt] = $val2;
@@ -125,8 +134,14 @@ class QuickPdoStmtTool
                 else {
                     $stmt .= ' and ';
                 }
-                $stmt .= $key . ' = :' . $mk . $mkCpt;
-                $markers[':' . $mk . $mkCpt] = $val;
+                if (null !== $val) {
+                    $stmt .= $key . ' = :' . $mk . $mkCpt;
+                    $markers[':' . $mk . $mkCpt] = $val;
+                }
+                else {
+                    $stmt .= $key . ' is null';
+                }
+
                 $mkCpt++;
             }
         }

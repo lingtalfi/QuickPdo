@@ -370,6 +370,11 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.6.0 -- 2016-01-15
+
+    - QuickPdoStmtTool: add null value handling in WHERE clauses 
+    
+    
 - 1.5.0 -- 2016-01-15
 
     - add QuickPdoStmtTool

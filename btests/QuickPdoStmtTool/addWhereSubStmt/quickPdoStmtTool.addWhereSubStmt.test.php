@@ -17,39 +17,44 @@ $a = [
         ['salary', 'between', 1500, 3000],
     ]],
     ["select * from mytable", [
-        ['id','>=', 6],
+        ['id', '>=', 6],
         ' and ( ',
-        ['the_name','like', 'maurice'],
+        ['the_name', 'like', 'maurice'],
         ' or ',
-        ['salary','between', 1500, 3000],
+        ['salary', 'between', 1500, 3000],
         ' )',
     ]],
     ["select * from mytable", "id in ( 6, 8, 9 )"],
+    // with null
+    ["select * from mytable", [
+        ['id', '>=', 6],
+        ['the_name', 'like', 'maurice'],
+        ['type', '=', null],
+        ['salary', 'between', 1500, 3000],
+    ]],
 ];
 
 $b = [
-    [
-        'select * from mytable where id >= :bzz_0 and the_name like :bzz_1 and salary between :bzz_2 and :bzz_3',
-        [
-            ':bzz_0' => 6,
-            ':bzz_1' => 'maurice',
-            ':bzz_2' => 1500,
-            ':bzz_3' => 3000,
-        ],
-    ],
-    [
-        'select * from mytable where id >= :bzz_0 and ( the_name like :bzz_1 or salary between :bzz_2 and :bzz_3 )',
-        [
-            ':bzz_0' => 6,
-            ':bzz_1' => 'maurice',
-            ':bzz_2' => 1500,
-            ':bzz_3' => 3000,
-        ],
-    ],
-    [
-        'select * from mytable where id in ( 6, 8, 9 )',
-        [],
-    ],
+    ['select * from mytable where id >= :bzz_0 and the_name like :bzz_1 and salary between :bzz_2 and :bzz_3', [
+        ':bzz_0' => 6,
+        ':bzz_1' => 'maurice',
+        ':bzz_2' => 1500,
+        ':bzz_3' => 3000,
+    ]],
+    ['select * from mytable where id >= :bzz_0 and ( the_name like :bzz_1 or salary between :bzz_2 and :bzz_3 )', [
+        ':bzz_0' => 6,
+        ':bzz_1' => 'maurice',
+        ':bzz_2' => 1500,
+        ':bzz_3' => 3000,
+    ]],
+    ['select * from mytable where id in ( 6, 8, 9 )', []],
+    // with null
+    ['select * from mytable where id >= :bzz_0 and the_name like :bzz_1 and type is null and salary between :bzz_2 and :bzz_3', [
+        ':bzz_0' => 6,
+        ':bzz_1' => 'maurice',
+        ':bzz_2' => 1500,
+        ':bzz_3' => 3000,
+    ]],    
 ];
 
 
