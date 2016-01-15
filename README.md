@@ -102,7 +102,6 @@ if (false !== ($lastId = QuickPdo::insert('mytable', [
 
 ### Delete
    
-Showing different forms of [whereConds](https://github.com/lingtalfi/QuickPdo) (second argument)
   
 ```php
 
