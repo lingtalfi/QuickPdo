@@ -98,35 +98,9 @@ class QuickPdo
     /**
      * Returns true|false
      *
-     * - whereConds: array of whereCond|glue
-     * with:
-     *
-     * - whereCond:
-     * ----- 0: field
-     * ----- 1: operator (<, =, >, <=, >=, like, between)
-     * ----- 2: operand (the value to compare the field with)
-     * ----- ?3: operand 2, only if between operator is used
-     *
-     *          Note: for mysql users, if the like operator is used, the operand can contain the wildcards chars:
-     *
-     *          - %: matches any number of characters, even zero characters
-     *          - _: matches exactly one character
-     *
-     *          To use the literal version of a wildcard char, prefix it with backslash (\%, \_).
-     *          See mysql docs for more info.
-     *
-     *
-     * - glue: string directly injected in the statement, so that one
-     *              can create the logical AND and OR and parenthesis operators.
-     *              We can also use it with the IN keyword, for instance:
-     *                      - in ( 6, 8, 9 )
-     *                      - in ( :doo, :foo, :koo )
-     *              In the latter case, we will also pass corresponding markers manually using the $extraMarkers argument.
-     *                      doo => 6,
-     *                      koo => 'something',
-     *                      ...
-     *
-     *
+     * - whereConds: glue | array of (whereCond | glue)
+     *              see QuickPdoStmtTool::addWhereSubStmt comments for more details,
+     *              or on the web at https://github.com/lingtalfi/QuickPdo#the-where-notation 
      *
      *
      * Common errors are:
@@ -308,38 +282,7 @@ class QuickPdo
     //------------------------------------------------------------------------------/
     private static function addWhereSubStmt($whereConds, &$stmt, array &$markers)
     {
-        if (is_array($whereConds)) {
-            if ($whereConds) {
-
-                $mkCpt = 0;
-                $mk = 'bzz_';
-                $stmt .= ' where ';
-                $first = true;
-                foreach ($whereConds as $cond) {
-                    if (is_array($cond)) {
-                        list($field, $op, $val) = $cond;
-                        $val2 = (isset($cond[3])) ? $cond[3] : null;
-                        if (true === $first) {
-                            $first = false;
-                        } else {
-                            $stmt .= ' and ';
-                        }
-                        $stmt .= $field . ' ' . $op . ' :' . $mk . $mkCpt;
-                        $markers[':' . $mk . $mkCpt] = $val;
-                        $mkCpt++;
-                        if ('between' === $op) {
-                            $stmt .= ' and ' . ' :' . $mk . $mkCpt;
-                            $markers[':' . $mk . $mkCpt] = $val2;
-                            $mkCpt++;
-                        }
-                    } elseif (is_string($cond)) {
-                        $stmt .= $cond;
-                    }
-                }
-            }
-        } elseif (is_string($whereConds)) {
-            $stmt .= ' where ' . $whereConds;
-        }
+        QuickPdoStmtTool::addWhereSubStmt($whereConds, $stmt, $markers);
     }
 
     private static function handleStatementErrors(\PDOStatement $query, $methodName)

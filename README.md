@@ -177,37 +177,55 @@ $rows = QuickPdo::update(
 The Where notation
 ----------------------
 
-Whenever you can use a where clause in your request (update, delete),
-QuickPdo uses the following special value called whereConds:
+
+The "Where notation" is used in QuickPdo::update and QuickPdo::delete methods.
+
+It allows you to write WHERE clause in an intuitive way.
+
+The notation is called whereConds and is the following:
+
+```
+- whereConds: glue | array of (whereCond | glue)
 
 
-    - whereConds: array of whereCond|glue
+With
+----- whereCond:
+--------- 0: field
+--------- 1: operator (<, =, >, <=, >=, like, between)
+--------- 2: operand (the value to compare the field with)
+--------- ?3: operand 2, only if between operator is used
+
+              Note: for mysql users, if the like operator is used, the operand can contain the wildcards chars:
+        
+              - %: matches any number of characters, even zero characters
+              - _: matches exactly one character
+        
+              To use the literal version of a wildcard char, prefix it with backslash (\%, \_).
+              See mysql docs for more info.
+
+
+----- glue: string directly injected in the statement, so that one
+          can create the logical AND and OR and parenthesis operators.
+          We can also use it with the IN keyword, for instance:
+                  - in ( 6, 8, 9 )
+                  - in ( :doo, :foo, :koo )
+          In the latter case, we will also pass corresponding markers manually using the $extraMarkers argument.
+                  doo => 6,
+                  koo => 'something',
+                  ...
     
-    ----- whereCond:
-    --------- 0: field
-    --------- 1: operator (<, =, >, <=, >=, like, between)
-    --------- 2: operand (the value to compare the field with)
-    --------- ?3: operand 2, only if between operator is used
-    
-                  Note: for mysql users, if the like operator is used, the operand can contain the wildcards chars:
-            
-                  - %: matches any number of characters, even zero characters
-                  - _: matches exactly one character
-            
-                  To use the literal version of a wildcard char, prefix it with backslash (\%, \_).
-                  See mysql docs for more info.
-    
-    
-    ----- glue: string directly injected in the statement, so that one
-              can create the logical AND and OR and parenthesis operators.
-              We can also use it with the IN keyword, for instance:
-                      - in ( 6, 8, 9 )
-                      - in ( :doo, :foo, :koo )
-              In the latter case, we will also pass corresponding markers manually using the $extraMarkers argument.
-                      doo => 6,
-                      koo => 'something',
-                      ...
-    
+```
+
+
+To see concrete examples of use, browse the documentation for the [QuickPdoStmtTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoStmtTool.md).  
+
+
+Note: since version 1.5.0, you can use the QuickPdoStmtTool to compute the **QuickPdo WHERE notation** for your own requests,
+see examples in the QuickPdoStmtTool documentation.
+
+
+
+
 
 
 
@@ -352,6 +370,12 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 1.5.0 -- 2016-01-15
+
+    - add QuickPdoStmtTool
+    - fix where notation mixed glue with whereCond problems
+    
     
 - 1.4.0 -- 2015-12-28
 
