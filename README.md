@@ -99,6 +99,20 @@ if (false !== ($lastId = QuickPdo::insert('mytable', [
 
 ```
 
+### Insert ignore
+  
+```php
+// this is a prepared request
+if (false !== ($lastId = QuickPdo::insert('mytable', [
+        'name' => 'Morris',   
+        'age' => 45,
+    ], 'ignore'))
+) {
+    echo $lastId;
+}
+
+```
+
 
 ### Delete
    
@@ -369,6 +383,11 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 1.7.0 -- 2016-01-18
+
+    - QuickPdo::insert: add keyword parameter  
+    
     
 - 1.6.0 -- 2016-01-15
 

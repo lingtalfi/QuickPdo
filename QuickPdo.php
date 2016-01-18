@@ -68,15 +68,16 @@ class QuickPdo
      *
      *
      */
-    public static function insert($table, array $fields)
+    public static function insert($table, array $fields, $keyword = '')
     {
-        $stmt = 'insert into ' . $table . ' set ';
+        $stmt = 'insert ' . $keyword . ' into ' . $table . ' set ';
         $first = true;
         $markers = [];
         foreach ($fields as $k => $v) {
             if (true === $first) {
                 $first = false;
-            } else {
+            }
+            else {
                 $stmt .= ',';
             }
             $stmt .= $k . '=:' . $k;
@@ -100,7 +101,7 @@ class QuickPdo
      *
      * - whereConds: glue | array of (whereCond | glue)
      *              see QuickPdoStmtTool::addWhereSubStmt comments for more details,
-     *              or on the web at https://github.com/lingtalfi/QuickPdo#the-where-notation 
+     *              or on the web at https://github.com/lingtalfi/QuickPdo#the-where-notation
      *
      *
      * Common errors are:
@@ -120,7 +121,8 @@ class QuickPdo
         foreach ($fields as $k => $v) {
             if (true === $first) {
                 $first = false;
-            } else {
+            }
+            else {
                 $stmt .= ',';
             }
             $stmt .= $k . '=:' . $k;
