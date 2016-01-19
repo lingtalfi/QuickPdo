@@ -75,6 +75,9 @@ if (false !== ($row = QuickPdo::fetch($stmt)) {
   
   
 ### FetchAll
+
+
+#### Fetch all with like example
 ```php
 
 $stmt = 'select id, the_name, active from ideas where the_name like :name';
@@ -83,6 +86,36 @@ $rows = QuickPdo::fetchAll($stmt, [
 ]);
 
 ```
+
+#### Fetch all to one dimensional array grouped by id example 
+
+```php
+<?php
+
+
+use QuickPdo\QuickPdo;
+
+require_once "bigbang.php"; // start the local universe
+
+
+a(QuickPdo::fetchAll("select id, email from users", [], \PDO::FETCH_UNIQUE | \PDO::FETCH_COLUMN | \PDO::FETCH_GROUP));
+```
+
+The above example would display something like this:
+
+```abap
+array (size=3)
+  1 => string 'lingtalfi@gmail.com' (length=19)
+  3 => string 'marcel@dupont.fr' (length=16)
+  2 => string 'roger@rabbit.com' (length=16)
+```
+
+
+
+
+
+
+
 
 
 ### Insert
