@@ -384,6 +384,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.8.0 -- 2016-01-19
+
+    - QuickPdo::fetchAll: add fetchStyle argument  
+    
 - 1.7.0 -- 2016-01-18
 
     - QuickPdo::insert: add keyword parameter  
