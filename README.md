@@ -101,7 +101,7 @@ require_once "bigbang.php"; // start the local universe
 a(QuickPdo::fetchAll("select id, email from users", [], \PDO::FETCH_UNIQUE | \PDO::FETCH_COLUMN | \PDO::FETCH_GROUP));
 ```
 
-The above example would display something like this:
+The above example would display something like this (notice that the key is the id value):
 
 ```abap
 array (size=3)
