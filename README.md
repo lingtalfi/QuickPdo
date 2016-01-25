@@ -301,13 +301,14 @@ false\|int    |   freeExec( stmt )                                            | 
 Tips
 -----------
   
-Access the last executed stmt
+### Access the last executed query
 ```php
     
-    // execute a request with QuickPdo...
-    echo QuickPdo::$stmt;
+    // execute a query with QuickPdo...
+    echo QuickPdo::getQuery(); // then access the actual query being executed
 
 ```
+
 
 
 
@@ -416,6 +417,10 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 1.9.0 -- 2016-01-25
+
+    - add QuickPdo::getQuery  
     
 - 1.8.0 -- 2016-01-19
 

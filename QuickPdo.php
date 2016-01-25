@@ -78,13 +78,12 @@ class QuickPdo
                 $first = false;
             }
             else {
-                $query .= ',';
+                $query .= ', ';
             }
             $query .= $k . '=:' . $k;
             $markers[':' . $k] = $v;
         }
-
-
+        
         $pdo = self::getConnection();
         self::$query = $query;
         $stmt = $pdo->prepare($query);
@@ -279,6 +278,10 @@ class QuickPdo
     }
 
 
+    public static function getQuery(){
+        return self::$query;
+    }
+    
     //------------------------------------------------------------------------------/
     //
     //------------------------------------------------------------------------------/
