@@ -25,6 +25,7 @@ class QuickPdoInfoTool
         }
 
         if ('mysql' === self::getDriver()) {
+            // faster execution...
             // https://www.percona.com/blog/2011/12/23/solving-information_schema-slowness/
             QuickPdo::freeExec("set global innodb_stats_on_metadata=0;");
         }
@@ -61,5 +62,14 @@ AND TABLE_NAME=:table;
     public static function getDriver()
     {
         return QuickPdo::getConnection()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+    }
+    
+    
+
+    public static function getTables($db)
+    {
+        QuickPdo::freeExec("use $db;");
+        $query = QuickPdo::getConnection()->query('show tables');
+        return $query->fetchAll(\PDO::FETCH_COLUMN);
     }
 }

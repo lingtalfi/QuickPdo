@@ -22,6 +22,7 @@ What are the new methods?
 - [getColumnNames](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getcolumnnames)
 - [getDatabase](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getdatabase)
 - [getDriver](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getdriver)
+- [getTables](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#gettables)
 
  
  
@@ -115,5 +116,20 @@ string    getDriver ( )
 ```
 
 Return the driver (mysql for instance) from the existing connection
+
+
+
+
+
+getTables
+-------------
+2016-01-26
+
+
+```php
+array    getTables ( str:database )
+```
+
+Return the array of tables for the given database
 
 

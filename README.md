@@ -363,8 +363,11 @@ try {
 Want more?
 --------------
 
-Since 1.4.0, we now have QuickPdoInfoTool, which adds a few method to the QuickPdo arsenal.
-Check the [QuickPdoInfoTool documentation](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md).
+The QuickPdo planet includes some other classes that achieve various tasks:
+
+- [QuickPdoDbOperationTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoDbOperationTool.md): to perform various database operations
+- [QuickPdoInfoTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md): a general companion for QuickPdo 
+- [QuickPdoStmtTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoStmtTool.md): to manipulate statements
 
 
 
@@ -417,6 +420,11 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 1.10.0 -- 2016-01-26
+
+    - add QuickPdoDbOperationTool  
+    - add QuickPdoInfoTool::getTables  
     
 - 1.9.0 -- 2016-01-25
 
