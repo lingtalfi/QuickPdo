@@ -17,8 +17,8 @@ class QuickPdoInfoTool
 
     /**
      * Return the name of the auto-incremented field, or false if there is none.
-     * 
-     * 
+     *
+     *
      * @return false|string
      */
     public static function getAutoIncrementedField($table, $schema = null)
@@ -89,5 +89,16 @@ AND TABLE_NAME=:table;
         QuickPdo::freeExec("use $db;");
         $query = QuickPdo::getConnection()->query('show tables');
         return $query->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    
+    public static function isEmptyTable($table)
+    {
+        if (false !== ($info = QuickPdo::fetch("select count(*) as count from $table"))) {
+            if (0 === (int)$info['count']) {
+                return true;
+            }
+        }
+        return false;
     }
 }

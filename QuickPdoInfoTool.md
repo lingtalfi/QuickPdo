@@ -147,3 +147,15 @@ array    getTables ( str:database )
 Return the array of tables for the given database
 
 
+
+isEmptyTable
+-------------
+2016-02-11
+
+
+```php
+bool    isEmptyTable ( str:table )
+```
+
+Return whether or not the given table is empty (contains no rows).
+

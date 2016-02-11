@@ -421,6 +421,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.13.0 -- 2016-02-11
+
+    - add QuickPdoInfoTool::isEmptyTable method   
+    
 - 1.12.0 -- 2016-02-11
 
     - add QuickPdoInfoTool::getAutoIncrementedField method   
