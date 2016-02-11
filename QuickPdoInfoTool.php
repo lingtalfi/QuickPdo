@@ -15,6 +15,25 @@ class QuickPdoInfoTool
 {
 
 
+    /**
+     * Return the name of the auto-incremented field, or false if there is none.
+     * 
+     * 
+     * @return false|string
+     */
+    public static function getAutoIncrementedField($table, $schema = null)
+    {
+        if (null !== $schema) {
+            $table = $schema . '.' . $table;
+        }
+
+        if (false !== ($rows = QuickPdo::fetchAll("show columns from $table where extra='auto_increment'"))) {
+            return $rows[0]['Field'];
+        }
+        return false;
+    }
+
+
     public static function getColumnNames($table, $schema = null)
     {
         /**
@@ -63,8 +82,7 @@ AND TABLE_NAME=:table;
     {
         return QuickPdo::getConnection()->getAttribute(\PDO::ATTR_DRIVER_NAME);
     }
-    
-    
+
 
     public static function getTables($db)
     {

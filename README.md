@@ -421,6 +421,15 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.12.0 -- 2016-02-11
+
+    - add QuickPdoInfoTool::getAutoIncrementedField method   
+    
+- 1.11.0 -- 2016-01-27
+
+    - add fetchStyle parameter for QuickPdo:fetch   
+    
+    
 - 1.10.0 -- 2016-01-26
 
     - add QuickPdoDbOperationTool  

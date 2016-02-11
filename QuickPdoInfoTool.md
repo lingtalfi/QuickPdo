@@ -19,6 +19,7 @@ It's a companion for the [QuickPdo](https://github.com/lingtalfi/QuickPdo) tool.
 What are the new methods?
 ------------------------
 
+- [getAutoIncrementedField](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getautoincrementedfield)
 - [getColumnNames](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getcolumnnames)
 - [getDatabase](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getdatabase)
 - [getDriver](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getdriver)
@@ -79,6 +80,19 @@ Note:
 
 Methods
 ===========
+
+
+getAutoIncrementedField
+-------------
+2016-02-11
+
+
+```php
+string|false    getAutoIncrementedField ( str:table, str:schema=null )
+```
+
+Return the name of the auto-incremented field, or false if there is none.
+
 
 
 getColumnNames
