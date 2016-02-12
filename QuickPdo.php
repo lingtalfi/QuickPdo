@@ -1,7 +1,6 @@
 <?php
 
 namespace QuickPdo;
-use QuickPdo\Exception\QuickPdoException;
 
 
 /**
@@ -13,8 +12,6 @@ use QuickPdo\Exception\QuickPdoException;
 class QuickPdo
 {
 
-
-    public static $strictMode = 0;
 
     public static $fetchStyle = \PDO::FETCH_ASSOC;
 
@@ -316,18 +313,12 @@ class QuickPdo
         if (0 !== (int)$stmt->errorInfo()[1]) {
             self::$errors[] = array_merge($stmt->errorInfo(), [$methodName]);
         }
-        if (1 === self::$strictMode) {
-            throw new QuickPdoException("$methodName: statement failed: $stmt");
-        }
     }
 
     private static function handleConnectionErrors(\PDO $conn, $methodName)
     {
         if (0 !== (int)$conn->errorInfo()[1]) {
             self::$errors[] = array_merge($conn->errorInfo(), [$methodName]);
-        }
-        if (1 === self::$strictMode) {
-            throw new QuickPdoException("$methodName: connection failed, with error: " . implode(', ', $conn->errorInfo()));
         }
     }
 }
