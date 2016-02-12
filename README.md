@@ -61,6 +61,8 @@ Examples
 -------------
   
   
+
+    
   
 ### Fetch
 ```php
@@ -72,6 +74,18 @@ if (false !== ($row = QuickPdo::fetch($stmt)) {
 
 ```
 
+  
+### Count
+
+Added in 1.14.0.
+
+```php
+
+if (false !== ($count = QuickPdo::count("my_table")) {
+    // do something with $count
+}
+
+```
   
   
 ### FetchAll
@@ -285,6 +299,7 @@ Return     |  Method Name                                       | Comments
 ---------- | -------------------------------------------------- | ---------------------
 void       |     setConnection ( \PDO ) |
 \PDO       |     getConnection ()        |                                      // Or throws \Exception
+false\|int  |     count ( table )                                               | // 1.14.0+ Returns the number of rows of the table in case of success, and false otherwise
 false\|int  |     insert ( table, array fields)                               | // Returns the last inserted id in case of success
 bool        |    update ( table, array fields, whereConds, extraMarkers?)    | // Returns true in case of success
 false\|int   |    delete ( table, whereConds)                                 | // Returns the number of deleted entries in case of success
@@ -420,6 +435,11 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 1.14.0 -- 2016-02-12
+
+    - add QuickPdo::count method
+       
     
 - 1.13.0 -- 2016-02-11
 

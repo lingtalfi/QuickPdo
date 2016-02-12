@@ -58,6 +58,23 @@ class QuickPdo
     // 
     //------------------------------------------------------------------------------/
     /**
+     * Return false|int
+     */
+    public static function count($table)
+    {
+        $query = "select count(*) as count from $table";
+        $pdo = self::getConnection();
+        self::$query = $query;
+        $stmt = $pdo->prepare($query);
+        if (true === $stmt->execute()) {
+            $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return (int)$res['count'];
+        }
+        self::handleStatementErrors($stmt, 'count');
+        return false;
+    }
+
+    /**
      * @return false|int, last insert id
      * Errors are accessible via a getError method
      *
@@ -83,7 +100,7 @@ class QuickPdo
             $query .= $k . '=:' . $k;
             $markers[':' . $k] = $v;
         }
-        
+
         $pdo = self::getConnection();
         self::$query = $query;
         $stmt = $pdo->prepare($query);
@@ -278,10 +295,11 @@ class QuickPdo
     }
 
 
-    public static function getQuery(){
+    public static function getQuery()
+    {
         return self::$query;
     }
-    
+
     //------------------------------------------------------------------------------/
     //
     //------------------------------------------------------------------------------/
