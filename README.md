@@ -436,6 +436,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.15.0 -- 2016-02-12
+
+    - add QuickPdoExceptionTool
+    
 - 1.14.0 -- 2016-02-12
 
     - add QuickPdo::count method
