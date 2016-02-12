@@ -349,6 +349,17 @@ The PDO error mode affects all (almost) QuickPdo's methods behaviour in case of 
 
 
 
+### Strict Mode
+ 
+Since 1.16.0, QuickPdo has a strict mode.
+
+This mode makes Pdo throw an exception whenever a method fails.
+ 
+[Conception notes are here](https://github.com/lingtalfi/QuickPdo/blob/master/conception/strict_mode.md).
+
+
+
+
 
 
 How to make transaction
@@ -435,6 +446,11 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 1.16.0 -- 2016-02-12
+
+    - add QuickPdo strict mode
+    
     
 - 1.15.0 -- 2016-02-12
 
