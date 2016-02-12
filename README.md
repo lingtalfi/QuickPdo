@@ -436,6 +436,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.16.0 -- 2016-02-12
+
+    - add QuickPdoInfoTool::getForeignKeysInfo
+    
 - 1.15.0 -- 2016-02-12
 
     - add QuickPdoExceptionTool

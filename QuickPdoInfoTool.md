@@ -132,6 +132,18 @@ string    getDriver ( )
 Return the driver (mysql for instance) from the existing connection
 
 
+getForeignKeysInfo
+-------------
+2016-02-12
+
+
+```php
+array    getForeignKeysInfo ( str:table, str:database=null )
+```
+
+Return an array of foreignKey => [ referencedDatabase, referencedTable, referencedColumn ]
+
+
 
 
 
