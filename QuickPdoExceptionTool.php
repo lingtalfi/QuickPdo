@@ -1,6 +1,6 @@
 <?php
 
-namespace QuickPdo\Mysql;
+namespace QuickPdo;
 
 /*
  * LingTalfi 2016-02-12
@@ -8,7 +8,6 @@ namespace QuickPdo\Mysql;
  * http://dev.mysql.com/doc/refman/5.7/en/error-messages-server.html
  * 
  */
-use QuickPdo\QuickPdoInfoTool;
 
 class QuickPdoExceptionTool
 {
