@@ -19,8 +19,10 @@ class QuickPdoExceptionTool
         $driverCode = $e->errorInfo[1];
         if ('23000' === $sqlstate) {
             $driver = QuickPdoInfoTool::getDriver();
-            if ("mysql" === $driver && 1062 === $driverCode) {
-                return true;
+            if ("mysql" === $driver) {
+                if (1062 === $driverCode) {
+                    return true;
+                }
             }
             else {
                 throw new \Exception("Driver not implemented: $driver");
