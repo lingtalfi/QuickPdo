@@ -430,6 +430,30 @@ Then the results will look like this on the console:
     +----+--------------+-----------+---------------------+--------+
 
 
+
+
+Useful tricks
+-----------------
+
+
+
+Return a flatten list for html select
+
+```php
+// return a flatten list for html select
+// return an array of $id => $name instead of $index => $row
+// http://stackoverflow.com/questions/7921154/in-php-is-it-possible-to-get-a-1-dimmensional-array-using-pdo
+// http://www.php.net/manual/en/pdostatement.fetchall.php
+$ret = QuickPdo::fetchAll('select id, name from countries', [], \PDO::FETCH_COLUMN|\PDO::FETCH_UNIQUE);
+
+
+
+// create a quick list for html select
+// return a flat list (array of key => $id instead of array of $index => $row)
+// http://stackoverflow.com/questions/7921154/in-php-is-it-possible-to-get-a-1-dimmensional-array-using-pdo
+// http://www.php.net/manual/en/pdostatement.fetchall.php
+$ret = QuickPdo::fetchAll('select id from countries', [], \PDO::FETCH_COLUMN);
+```
  
  
  
