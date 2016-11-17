@@ -93,8 +93,7 @@ class QuickPdo
         foreach ($fields as $k => $v) {
             if (true === $first) {
                 $first = false;
-            }
-            else {
+            } else {
                 $query .= ', ';
             }
             $query .= $k . '=:' . $k;
@@ -125,8 +124,7 @@ class QuickPdo
         foreach ($fields as $k => $v) {
             if (true === $first) {
                 $first = false;
-            }
-            else {
+            } else {
                 $query .= ', ';
             }
             $query .= $k . '=:' . $k;
@@ -146,6 +144,26 @@ class QuickPdo
 
     /**
      * Returns true|false
+     *
+     *
+     * - fields: array of key => fieldEntry.
+     *      A fieldEntry is either a string or an array.
+     *      If it's a string, it represents the value of the key.
+     *
+     *      If it's an array, then its first key is an expression injected directly into the mysql statement (without the
+     *          usual mysql secured preparation).
+     *
+     *      This helps for the case where you want to perform an increment or decrement of a value.
+     *      For instance:
+     *                  update users set nb_points=nb_points+1 where id=6
+     *
+     *      In this case, the fields array should look like this:
+     *              [
+     *                  'nb_points' => ['nb_points+1'],
+     *              ]
+     *
+     *
+     *
      *
      * - whereConds: glue | array of (whereCond | glue)
      *              see QuickPdoStmtTool::addWhereSubStmt comments for more details,
@@ -169,12 +187,17 @@ class QuickPdo
         foreach ($fields as $k => $v) {
             if (true === $first) {
                 $first = false;
-            }
-            else {
+            } else {
                 $query .= ',';
             }
-            $query .= $k . '=:' . $k;
-            $markers[':' . $k] = $v;
+
+            if (!is_array($v)) {
+                $query .= $k . '=:' . $k;
+                $markers[':' . $k] = $v;
+            } else {
+                $v = array_shift($v);
+                $query .= "$k=$v";
+            }
         }
 
         self::addWhereSubStmt($whereConds, $query, $markers);

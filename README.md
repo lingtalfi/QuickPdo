@@ -248,6 +248,22 @@ $rows = QuickPdo::update(
 );
 
 ``````
+
+
+
+#### Increment/decrement a specific column 
+  
+  
+```php
+        
+        
+$rows = QuickPdo::update(
+    'users',
+    ['nb_points' => ['nb_points+1']],
+    [['id', '=', $userId]]
+);
+
+``````
   
 
 ### Replace
@@ -468,6 +484,11 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 1.19.0 -- 2016-11-17
+
+    - QuickPdo::update can now do increments (update users set nb_points=nb_points+1 where id=550)
+    
     
 - 1.18.0 -- 2016-11-16
 
