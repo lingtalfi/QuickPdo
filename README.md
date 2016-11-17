@@ -128,6 +128,25 @@ array (size=3)
 
 
 
+#### Return a flatten list for html select
+
+```php
+// return a flatten list for html select
+// return an array of $id => $name instead of $index => $row
+// http://stackoverflow.com/questions/7921154/in-php-is-it-possible-to-get-a-1-dimmensional-array-using-pdo
+// http://www.php.net/manual/en/pdostatement.fetchall.php
+$ret = QuickPdo::fetchAll('select id, name from countries', [], \PDO::FETCH_COLUMN|\PDO::FETCH_UNIQUE);
+
+
+
+// create a quick list for html select
+// return a flat list (array of key => $id instead of array of $index => $row)
+// http://stackoverflow.com/questions/7921154/in-php-is-it-possible-to-get-a-1-dimmensional-array-using-pdo
+// http://www.php.net/manual/en/pdostatement.fetchall.php
+$ret = QuickPdo::fetchAll('select id from countries', [], \PDO::FETCH_COLUMN);
+```
+
+
 
 
 
@@ -231,7 +250,16 @@ $rows = QuickPdo::update(
 ``````
   
 
-
+### Replace
+  
+```php
+foreach ($instruments as $instrumentId) {
+    QuickPdo::replace('users_has_instruments', [
+        'users_id' => $userId,
+        'instruments_id' => $instrumentId,
+    ]);
+}
+```
  
  
 The Where notation
@@ -297,18 +325,21 @@ Methods
 
 Return     |  Method Name                                       | Comments
 ---------- | -------------------------------------------------- | ---------------------
-void       |     setConnection ( \PDO ) |
-\PDO       |     getConnection ()        |                                      // Or throws \Exception
-false\|int  |     count ( table )                                               | // 1.14.0+ Returns the number of rows of the table in case of success, and false otherwise
-false\|int  |     insert ( table, array fields)                               | // Returns the last inserted id in case of success
-bool        |    update ( table, array fields, whereConds, extraMarkers?)    | // Returns true in case of success
-false\|int   |    delete ( table, whereConds)                                 | // Returns the number of deleted entries in case of success
-false\|array  |   fetchAll ( stmt, array markers?)                            | // Returns the rows in case of success
-false\|array   |  fetch ( stmt, array markers?)                               | // Returns a single row in case of success
-false\|\PDOStatement     |  freeQuery( stmt, array markers?)                  | // Returns the \PDOStatement query in case of success
-false\|int     |  freeStmt( stmt, array markers?)                             | // Returns the number of affected lines in case of success
-false\|int    |   freeExec( stmt )                                            | // Returns the number of affected lines in case of success
-                                                                            // This is not a prepared request, it calls pdo->exec directly
+void                    | setConnection ( dsn, user, pass, array options ) |
+\PDO                    | getConnection ()        |                                      Or throws \Exception
+false\|int              | count ( table )                                               | 1.14.0+ Returns the number of rows of the table in case of success, and false otherwise
+false\|int              | insert ( table, array fields, keyword?)                               | Returns the last inserted id in case of success
+bool                    | replace ( table, array fields, keyword?)                               | 
+bool                    | update ( table, array fields, whereConds?, array extraMarkers?)    | Returns true in case of success
+false\|int              | delete ( table, array whereConds?)                                 | Returns the number of deleted entries in case of success
+false\|array            | fetchAll ( stmt, array markers?, fetchStyle?)                            | Returns the rows in case of success
+false\|array            | fetch ( stmt, array markers?, fetchStyle?)                               | Returns a single row in case of success
+false\|\PDOStatement    | freeQuery( stmt, array markers?)                  | Returns the \PDOStatement query in case of success
+false\|int              | freeStmt( stmt, array markers?)                             | Returns the number of affected lines in case of success
+false\|int              | freeExec( stmt )                                            | Returns the number of affected lines in case of success. This is not a prepared request, it calls pdo->exec directly
+array                   | getErrors( )                                            | Returns an array of errorArray (0: SQLSTATE error code, 1: Driver-specific error code, 2: Driver-specific error message, 3: class method name)
+array                   | getLastError ( )                                            | Returns the last errorArray (see getErrors method for a definition of errorArray)
+string                  | getQuery ( )                                            | Returns the current query
 
 
 
@@ -432,33 +463,15 @@ Then the results will look like this on the console:
 
 
 
-Useful tricks
------------------
-
-
-
-Return a flatten list for html select
-
-```php
-// return a flatten list for html select
-// return an array of $id => $name instead of $index => $row
-// http://stackoverflow.com/questions/7921154/in-php-is-it-possible-to-get-a-1-dimmensional-array-using-pdo
-// http://www.php.net/manual/en/pdostatement.fetchall.php
-$ret = QuickPdo::fetchAll('select id, name from countries', [], \PDO::FETCH_COLUMN|\PDO::FETCH_UNIQUE);
-
-
-
-// create a quick list for html select
-// return a flat list (array of key => $id instead of array of $index => $row)
-// http://stackoverflow.com/questions/7921154/in-php-is-it-possible-to-get-a-1-dimmensional-array-using-pdo
-// http://www.php.net/manual/en/pdostatement.fetchall.php
-$ret = QuickPdo::fetchAll('select id from countries', [], \PDO::FETCH_COLUMN);
-```
  
  
  
 History Log
 ------------------
+    
+- 1.18.0 -- 2016-11-16
+
+    - add QuickPdo::replace
     
 - 1.17.0 -- 2016-11-10
 

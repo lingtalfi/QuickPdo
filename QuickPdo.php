@@ -113,6 +113,38 @@ class QuickPdo
 
 
     /**
+     * @return bool, whether or not the replacement was successful.
+     * Errors are accessible via a getError method
+     *
+     */
+    public static function replace($table, array $fields, $keyword = '')
+    {
+        $query = 'replace ' . $keyword . ' into ' . $table . ' set ';
+        $first = true;
+        $markers = [];
+        foreach ($fields as $k => $v) {
+            if (true === $first) {
+                $first = false;
+            }
+            else {
+                $query .= ', ';
+            }
+            $query .= $k . '=:' . $k;
+            $markers[':' . $k] = $v;
+        }
+
+        $pdo = self::getConnection();
+        self::$query = $query;
+        $stmt = $pdo->prepare($query);
+        if (true === $stmt->execute($markers)) {
+            return true;
+        }
+        self::handleStatementErrors($stmt, 'replace');
+        return false;
+    }
+
+
+    /**
      * Returns true|false
      *
      * - whereConds: glue | array of (whereCond | glue)
