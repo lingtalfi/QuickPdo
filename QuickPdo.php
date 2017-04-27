@@ -30,6 +30,7 @@ class QuickPdo
      *
      */
     private static $errors = [];
+    private static $onQueryReadyCallback;
 
     public static function setConnection($dsn, $user, $pass, array $options)
     {
@@ -62,6 +63,15 @@ class QuickPdo
     }
 
 
+    /**
+     * @param $fn ( query, array markers=[] )
+     */
+    public static function setOnQueryReadyCallback($fn)
+    {
+        self::$onQueryReadyCallback = $fn;
+    }
+
+
     //------------------------------------------------------------------------------/
     // 
     //------------------------------------------------------------------------------/
@@ -73,6 +83,8 @@ class QuickPdo
         $query = "select count(*) as count from $table";
         $pdo = self::getConnection();
         self::$query = $query;
+        self::onQueryReady($query);
+
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute()) {
             $res = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -110,6 +122,7 @@ class QuickPdo
 
         $pdo = self::getConnection();
         self::$query = $query;
+        self::onQueryReady($query, $markers);
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return $pdo->lastInsertId();
@@ -142,6 +155,7 @@ class QuickPdo
 
         $pdo = self::getConnection();
         self::$query = $query;
+        self::onQueryReady($query, $markers);
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return true;
@@ -212,6 +226,7 @@ class QuickPdo
         self::addWhereSubStmt($whereConds, $query, $markers);
         $markers = array_replace($markers, $extraMarkers);
         self::$query = $query;
+        self::onQueryReady($query, $markers);
 
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
@@ -239,6 +254,8 @@ class QuickPdo
         $markers = [];
         self::addWhereSubStmt($whereConds, $query, $markers);
         self::$query = $query;
+        self::onQueryReady($query, $markers);
+
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return $stmt->rowCount();
@@ -260,6 +277,8 @@ class QuickPdo
     {
         $pdo = self::getConnection();
         self::$query = $query;
+        self::onQueryReady($query, $markers);
+
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return $stmt->fetchAll((null !== $fetchStyle) ? $fetchStyle : self::$fetchStyle);
@@ -281,6 +300,8 @@ class QuickPdo
     {
         $pdo = self::getConnection();
         self::$query = $query;
+        self::onQueryReady($query, $markers);
+
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return $stmt->fetch((null !== $fetchStyle) ? $fetchStyle : self::$fetchStyle);
@@ -304,6 +325,7 @@ class QuickPdo
     {
         $pdo = self::getConnection();
         self::$query = $query;
+        self::onQueryReady($query);
         if (false !== $r = $pdo->exec($query)) {
             return $r;
         }
@@ -320,6 +342,7 @@ class QuickPdo
     {
         $pdo = self::getConnection();
         self::$query = $query;
+        self::onQueryReady($query, $markers);
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return $stmt;
@@ -338,6 +361,7 @@ class QuickPdo
     {
         $pdo = self::getConnection();
         self::$query = $query;
+        self::onQueryReady($query, $markers);
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return $stmt->rowCount();
@@ -364,6 +388,17 @@ class QuickPdo
     {
         return self::$query;
     }
+
+    //--------------------------------------------
+    //
+    //--------------------------------------------
+    protected static function onQueryReady($query, array $markers = null)
+    {
+        if (null !== self::$onQueryReadyCallback) {
+            call_user_func(self::$onQueryReadyCallback, $query, $markers);
+        }
+    }
+
 
     //------------------------------------------------------------------------------/
     //

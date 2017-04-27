@@ -421,6 +421,12 @@ try {
 ```
 
 
+How to log every request
+-----------------------
+
+Use the QuickPdo.setOnQueryReadyCallback method to see all request passing through your callback.
+
+
 
 
 Want more?
@@ -485,6 +491,10 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 1.25.0 -- 2017-04-27
+
+    - add QuickPdo.setOnQueryReadyCallback method
     
 - 1.24.0 -- 2017-01-14
 
