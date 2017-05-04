@@ -25,6 +25,7 @@ What are the new methods?
 - [getColumnNames](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getcolumnnames)
 - [getColumnNullabilities](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getcolumnnullabilities)
 - [getDatabase](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getdatabase)
+- [getDatabases](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getdatabases)
 - [getDriver](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getdriver)
 - [getPrimaryKey](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getprimarykey)
 - [getTables](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#gettables)
@@ -174,6 +175,25 @@ string    getDatabase ( )
 ```
 
 Return the database name from existing connection
+
+
+getDatabases
+-------------
+2017-05-04
+
+
+```php
+array    getDatabases ( bool:filterMysql=true )
+```
+
+Return the databases names from existing connection.
+If filterMysql is true (by default), will automatically filter the following (default mysql) databases:
+
+- mysql
+- information_schema
+- performance_schema
+
+
 
 
 getDriver

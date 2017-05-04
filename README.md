@@ -492,6 +492,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.26.0 -- 2017-05-04
+
+    - add QuickPdoInfoTool.getDatabases method
+    
 - 1.25.0 -- 2017-04-27
 
     - add QuickPdo.setOnQueryReadyCallback method

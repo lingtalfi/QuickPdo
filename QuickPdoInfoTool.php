@@ -70,7 +70,6 @@ class QuickPdoInfoTool
     }
 
 
-
     public static function getColumnNames($table, $schema = null)
     {
         /**
@@ -122,7 +121,6 @@ AND TABLE_NAME=:table;
     }
 
 
-
     public static function getDatabase()
     {
         if ('mysql' === self::getDriver()) {
@@ -133,6 +131,28 @@ AND TABLE_NAME=:table;
         }
     }
 
+
+    public static function getDatabases($filterMysql = true)
+    {
+        if (true === $filterMysql) {
+            $filter = function ($v) {
+                if (
+                    'mysql' === $v ||
+                    'performance_schema' === $v ||
+                    'information_schema' === $v
+                ) {
+                    return false;
+                }
+                return true;
+            };
+        } else {
+            $filter = function () {
+                return true;
+            };
+        }
+        $query = QuickPdo::getConnection()->query('show databases');
+        return array_filter($query->fetchAll(\PDO::FETCH_COLUMN), $filter);
+    }
 
     public static function getDriver()
     {
@@ -196,6 +216,7 @@ and CONSTRAINT_TYPE = 'FOREIGN KEY'
         $query = QuickPdo::getConnection()->query('show tables');
         return $query->fetchAll(\PDO::FETCH_COLUMN);
     }
+
 
 
     public static function isEmptyTable($table)
