@@ -115,9 +115,8 @@ class QuickPdoStmtTool
      * @param $stmt
      * @param array $markers
      */
-    public static function addWhereEqualsSubStmt(array $keys2Values, &$stmt, array &$markers)
+    public static function addWhereEqualsSubStmt(array $keys2Values, &$stmt, array &$markers, $tablePrefix='')
     {
-
         if ($keys2Values) {
             $mkCpt = 0;
             $mk = 'bzz_';
@@ -130,10 +129,10 @@ class QuickPdoStmtTool
                     $stmt .= ' and ';
                 }
                 if (null !== $val) {
-                    $stmt .= '`' . $key . '` = :' . $mk . $mkCpt;
+                    $stmt .= $tablePrefix . '`' . $key . '` = :' . $mk . $mkCpt;
                     $markers[':' . $mk . $mkCpt] = $val;
                 } else {
-                    $stmt .= '`' . $key . '` is null';
+                    $stmt .= $tablePrefix . '`' . $key . '` is null';
                 }
 
                 $mkCpt++;

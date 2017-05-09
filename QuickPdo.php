@@ -222,7 +222,6 @@ class QuickPdo
                 $query .= "$k=$v";
             }
         }
-
         self::addWhereSubStmt($whereConds, $query, $markers);
         $markers = array_replace($markers, $extraMarkers);
         self::$query = $query;

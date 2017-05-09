@@ -1,6 +1,6 @@
 QuickPdoStmtTool
 =================
-2016-01-15
+2016-01-15 --> 2017-05-09
 
 
 
@@ -34,7 +34,7 @@ Methods
 
 
 ```php
-void function addWhereSubStmt ( mixed:whereConds, &str:stmt, &array:$markers )
+void function addWhereSubStmt ( mixed:whereConds, &str:stmt, &array:$markers, str:tablePrefix="" )
 ```
 
 This method adds the WHERE clause to your statement.

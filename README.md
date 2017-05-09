@@ -492,6 +492,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.27.0 -- 2017-05-09
+
+    - add QuickPdoStmtTool.addWhereEqualsSubStmt.tablePrefix argument
+    
 - 1.26.0 -- 2017-05-04
 
     - add QuickPdoInfoTool.getDatabases method
