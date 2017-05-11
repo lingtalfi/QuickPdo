@@ -52,7 +52,7 @@ class QuickPdoInfoCacheUtil
 
     public function getColumnDataTypes($table, $precision = false)
     {
-        return $this->getResult(__METHOD__, func_get_args(), $table);
+        return $this->getResult(__METHOD__, func_get_args(), "$table-$precision");
     }
 
     public function getColumnDefaultValues($table)
@@ -77,7 +77,7 @@ class QuickPdoInfoCacheUtil
 
     public function getDatabases($filterMysql = true)
     {
-        return $this->getResult(__METHOD__, func_get_args());
+        return $this->getResult(__METHOD__, func_get_args(), "$filterMysql");
     }
 
     public function getForeignKeysInfo($table, $schema = null)
