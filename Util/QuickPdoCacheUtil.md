@@ -1,0 +1,26 @@
+QuickPdoCacheUtil
+=================
+2017-05-11
+
+
+
+What is it?
+-------------------
+
+
+It's a caching wrapper for the [QuickPdoInfoTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md).
+ 
+
+
+
+ 
+
+
+Methods
+------------
+
+Like QuickPdoInfoTool.
+
+Under the hood, it will cache the results.
+
+To disable the cache, use the cache method, which accepts a boolean.

@@ -437,6 +437,7 @@ The QuickPdo planet includes some other classes that achieve various tasks:
 - [QuickPdoDbOperationTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoDbOperationTool.md): to perform various database operations
 - [QuickPdoInfoTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md): a general companion for QuickPdo 
 - [QuickPdoStmtTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoStmtTool.md): to manipulate statements
+- [QuickPdoInfoCacheUtil](https://github.com/lingtalfi/QuickPdo/blob/master/Util/QuickPdoInfoCacheUtil.md): a caching wrapper for QuickPdoInfoTool
 
 
 
@@ -491,6 +492,10 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 1.28.0 -- 2017-05-11
+
+    - add QuickPdoInfoCacheUtil
     
 - 1.27.0 -- 2017-05-09
 
