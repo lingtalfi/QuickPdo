@@ -18,10 +18,11 @@ class QuickPdoInfoCacheUtil
         $this->useCache = true;
     }
 
-    public function create()
+    public static function create()
     {
         return new static();
     }
+
 
     public function cache($useCache)
     {
