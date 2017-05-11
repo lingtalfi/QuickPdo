@@ -30,6 +30,16 @@ class QuickPdoInfoCacheUtil
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getCacheDir()
+    {
+        return $this->cacheDir;
+    }
+
+
+
 
 
     //--------------------------------------------
@@ -37,27 +47,27 @@ class QuickPdoInfoCacheUtil
     //--------------------------------------------
     public function getAutoIncrementedField($table, $schema = null)
     {
-        return $this->getResult(__METHOD__, func_get_args());
+        return $this->getResult(__METHOD__, func_get_args(), "$table-$schema");
     }
 
     public function getColumnDataTypes($table, $precision = false)
     {
-        return $this->getResult(__METHOD__, func_get_args());
+        return $this->getResult(__METHOD__, func_get_args(), $table);
     }
 
     public function getColumnDefaultValues($table)
     {
-        return $this->getResult(__METHOD__, func_get_args());
+        return $this->getResult(__METHOD__, func_get_args(), $table);
     }
 
     public function getColumnNames($table, $schema = null)
     {
-        return $this->getResult(__METHOD__, func_get_args());
+        return $this->getResult(__METHOD__, func_get_args(), "$table-$schema");
     }
 
     public function getColumnNullabilities($table)
     {
-        return $this->getResult(__METHOD__, func_get_args());
+        return $this->getResult(__METHOD__, func_get_args(), $table);
     }
 
     public function getDatabase()
@@ -72,27 +82,27 @@ class QuickPdoInfoCacheUtil
 
     public function getForeignKeysInfo($table, $schema = null)
     {
-        return $this->getResult(__METHOD__, func_get_args());
+        return $this->getResult(__METHOD__, func_get_args(), "$table-$schema");
     }
 
     public function getPrimaryKey($table, $schema = null)
     {
-        return $this->getResult(__METHOD__, func_get_args());
+        return $this->getResult(__METHOD__, func_get_args(), "$table-$schema");
     }
 
     public function getTables($db)
     {
-        return $this->getResult(__METHOD__, func_get_args());
+        return $this->getResult(__METHOD__, func_get_args(), $db);
     }
 
     //--------------------------------------------
     //
     //--------------------------------------------
-    private function getResult($method, array $args)
+    private function getResult($method, array $args, $cacheHint = null)
     {
         $p = explode('::', $method);
         $method = array_pop($p);
-        $f = $this->cacheDir . "/$method.php";
+        $f = $this->cacheDir . "/$method-$cacheHint.php";
         if (false === $this->useCache || false === file_exists($f)) {
             $ret = call_user_func_array(['QuickPdo\QuickPdoInfoTool', $method], $args);
             if (!is_dir($this->cacheDir)) {
