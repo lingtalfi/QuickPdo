@@ -2,6 +2,8 @@
 
 namespace QuickPdo\Util;
 
+use Bat\FileSystemTool;
+
 
 /**
  * A cache wrapper/proxy for QuickPdoInfoTool.
@@ -38,6 +40,10 @@ class QuickPdoInfoCacheUtil
         return $this->cacheDir;
     }
 
+
+    public function cleanCache(){
+        FileSystemTool::remove($this->cacheDir);
+    }
 
 
 

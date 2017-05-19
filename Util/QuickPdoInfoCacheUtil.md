@@ -17,10 +17,26 @@ It's a caching wrapper for the [QuickPdoInfoTool](https://github.com/lingtalfi/Q
 
 
 Methods
-------------
+==============
 
-Like QuickPdoInfoTool.
+For the most part, the methods are the methods of QuickPdoInfoTool.
 
 Under the hood, it will cache the results.
 
 To disable the cache, use the cache method, which accepts a boolean.
+
+
+
+
+cleanCache
+----------------
+2017-05-19
+
+
+
+```php
+void function cleanCache ( )
+```
+
+Cleans the cache.
+ 
