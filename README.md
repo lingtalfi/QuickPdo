@@ -493,6 +493,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.30.0 -- 2017-05-19
+
+    - add QuickPdoInfoCacheUtil.prepareDb
+    
 - 1.29.0 -- 2017-05-19
 
     - add QuickPdoInfoCacheUtil.cleanCache

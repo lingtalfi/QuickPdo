@@ -3,6 +3,7 @@
 namespace QuickPdo\Util;
 
 use Bat\FileSystemTool;
+use QuickPdo\QuickPdoInfoTool;
 
 
 /**
@@ -41,11 +42,35 @@ class QuickPdoInfoCacheUtil
     }
 
 
-    public function cleanCache(){
+    public function cleanCache()
+    {
         FileSystemTool::remove($this->cacheDir);
     }
 
+    public function prepareDb($db)
+    {
+        $tables = QuickPdoInfoTool::getTables($db);
+        $useCache = $this->useCache;
 
+        /**
+         * Temporarily disable the cache
+         */
+        $this->useCache = false;
+        foreach ($tables as $table) {
+            $this->getAutoIncrementedField($table, $db);
+            $this->getColumnDataTypes($db . "." . $table);
+            $this->getColumnDefaultValues($db . "." . $table);
+            $this->getColumnNames($table, $db);
+            $this->getColumnNullabilities($table, $db);
+            $this->getForeignKeysInfo($table, $db);
+            $this->getPrimaryKey($table, $db);
+            $this->getTables($db);
+        }
+        /**
+         * Restore the cache state
+         */
+        $this->useCache = $useCache;
+    }
 
 
     //--------------------------------------------

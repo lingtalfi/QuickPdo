@@ -39,4 +39,18 @@ void function cleanCache ( )
 ```
 
 Cleans the cache.
+
+
+
+prepareDb
+----------------
+2017-05-19
+
+
+
+```php
+void function prepareDb ( str:database )
+```
+
+Prepare the cache values of various methods in advance for a given database.
  
