@@ -493,6 +493,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 1.31.0 -- 2017-05-20
+
+    - QuickPdoStmtTool now uses uppercase special keywords 
+    
 - 1.30.0 -- 2017-05-19
 
     - add QuickPdoInfoCacheUtil.prepareDb
