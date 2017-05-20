@@ -75,6 +75,11 @@ class QuickPdo
     //------------------------------------------------------------------------------/
     // 
     //------------------------------------------------------------------------------/
+    public static function changeErrorMode($newErrorMode)
+    {
+        self::getConnection()->setAttribute(\PDO::ATTR_ERRMODE, $newErrorMode);
+    }
+
     /**
      * Return false|int
      */

@@ -344,6 +344,7 @@ Return     |  Method Name                                       | Comments
 void                    | setConnection ( dsn, user, pass, array options ) |
 \PDO                    | getConnection ()        |                                      Or throws \Exception
 bool                    | hasConnection ()        |                                      Returns whether or not the PDO connection has been set
+void                    | changeErrorMode ( newErrorMode )                              | Change the error mode to your likings
 false\|int              | count ( table )                                               | 1.14.0+ Returns the number of rows of the table in case of success, and false otherwise
 false\|int              | insert ( table, array fields, keyword?)                               | Returns the last inserted id in case of success
 bool                    | replace ( table, array fields, keyword?)                               | 
@@ -428,6 +429,14 @@ Use the QuickPdo.setOnQueryReadyCallback method to see all request passing throu
 
 
 
+How to change error mode?
+----------------------------
+
+```php
+QuickPdo::changeErrorMode(\PDO::ERRMODE_WARNING);
+```
+
+
 
 Want more?
 --------------
@@ -492,6 +501,10 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 1.32.0 -- 2017-05-20
+
+    - add QuickPdo::changeErrorMode method 
     
 - 1.31.0 -- 2017-05-20
 
