@@ -74,6 +74,17 @@ if (false !== ($row = QuickPdo::fetch($stmt)) {
 
 ```
 
+
+#### Fetch with markers
+
+```php
+
+$stmt = 'select id, name from my_table where host=:host';
+$row = QuickPdo::fetch($stmt, ["host" => "mydomain.com"]);
+
+```
+
+
   
 ### Count
 
