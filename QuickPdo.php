@@ -30,6 +30,25 @@ class QuickPdo
      *
      */
     private static $errors = [];
+
+    /**
+     * callback:
+     *
+     *          fn (method, query, markers=null, table=null)
+     *
+     * - method: string, the name of the method called
+     * - query: string, the query being executed
+     * - markers: array|null, the markers being used if any, or null otherwise
+     * - table: string|null, the table name, or null if not provided.
+     *                      The table name is provided by the following methods:
+     *                      - update
+     *                      - delete
+     *                      - insert
+     *                      - replace
+     *
+     *
+     *
+     */
     private static $onQueryReadyCallback;
 
     public static function setConnection($dsn, $user, $pass, array $options)
@@ -88,7 +107,7 @@ class QuickPdo
         $query = "select count(*) as count from $table";
         $pdo = self::getConnection();
         self::$query = $query;
-        self::onQueryReady($query);
+        self::onQueryReady("count", $query, null, $table);
 
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute()) {
@@ -127,7 +146,7 @@ class QuickPdo
 
         $pdo = self::getConnection();
         self::$query = $query;
-        self::onQueryReady($query, $markers);
+        self::onQueryReady('insert', $query, $markers, $table);
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return $pdo->lastInsertId();
@@ -160,7 +179,7 @@ class QuickPdo
 
         $pdo = self::getConnection();
         self::$query = $query;
-        self::onQueryReady($query, $markers);
+        self::onQueryReady('replace', $query, $markers, $table);
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return true;
@@ -230,7 +249,7 @@ class QuickPdo
         self::addWhereSubStmt($whereConds, $query, $markers);
         $markers = array_replace($markers, $extraMarkers);
         self::$query = $query;
-        self::onQueryReady($query, $markers);
+        self::onQueryReady('update', $query, $markers, $table);
 
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
@@ -258,7 +277,7 @@ class QuickPdo
         $markers = [];
         self::addWhereSubStmt($whereConds, $query, $markers);
         self::$query = $query;
-        self::onQueryReady($query, $markers);
+        self::onQueryReady('delete', $query, $markers, $table);
 
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
@@ -281,7 +300,7 @@ class QuickPdo
     {
         $pdo = self::getConnection();
         self::$query = $query;
-        self::onQueryReady($query, $markers);
+        self::onQueryReady("fetchAll", $query, $markers);
 
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
@@ -304,7 +323,7 @@ class QuickPdo
     {
         $pdo = self::getConnection();
         self::$query = $query;
-        self::onQueryReady($query, $markers);
+        self::onQueryReady("fetch", $query, $markers);
 
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
@@ -329,7 +348,7 @@ class QuickPdo
     {
         $pdo = self::getConnection();
         self::$query = $query;
-        self::onQueryReady($query);
+        self::onQueryReady("freeExec", $query);
         if (false !== $r = $pdo->exec($query)) {
             return $r;
         }
@@ -346,7 +365,7 @@ class QuickPdo
     {
         $pdo = self::getConnection();
         self::$query = $query;
-        self::onQueryReady($query, $markers);
+        self::onQueryReady("freeQuery", $query, $markers);
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return $stmt;
@@ -365,7 +384,7 @@ class QuickPdo
     {
         $pdo = self::getConnection();
         self::$query = $query;
-        self::onQueryReady($query, $markers);
+        self::onQueryReady("freeStmt", $query, $markers);
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             return $stmt->rowCount();
@@ -396,10 +415,10 @@ class QuickPdo
     //--------------------------------------------
     //
     //--------------------------------------------
-    protected static function onQueryReady($query, array $markers = null)
+    protected static function onQueryReady($method, $query, array $markers = null, $table = null)
     {
         if (null !== self::$onQueryReadyCallback) {
-            call_user_func(self::$onQueryReadyCallback, $query, $markers);
+            call_user_func(self::$onQueryReadyCallback, $method, $query, $markers, $table);
         }
     }
 

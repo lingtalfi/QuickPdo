@@ -513,6 +513,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.0.0 -- 2017-05-23
+
+    - change QuickPdo.setOnQueryReadyCallback signature
+    
 - 1.32.0 -- 2017-05-20
 
     - add QuickPdo::changeErrorMode method 
