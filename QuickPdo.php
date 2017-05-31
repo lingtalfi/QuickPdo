@@ -249,7 +249,7 @@ class QuickPdo
         self::addWhereSubStmt($whereConds, $query, $markers);
         $markers = array_replace($markers, $extraMarkers);
         self::$query = $query;
-        self::onQueryReady('update', $query, $markers, $table);
+        self::onQueryReady('update', $query, $markers, $table, $whereConds);
 
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
@@ -277,7 +277,7 @@ class QuickPdo
         $markers = [];
         self::addWhereSubStmt($whereConds, $query, $markers);
         self::$query = $query;
-        self::onQueryReady('delete', $query, $markers, $table);
+        self::onQueryReady('delete', $query, $markers, $table, $whereConds);
 
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
@@ -415,10 +415,10 @@ class QuickPdo
     //--------------------------------------------
     //
     //--------------------------------------------
-    protected static function onQueryReady($method, $query, array $markers = null, $table = null)
+    protected static function onQueryReady($method, $query, array $markers = null, $table = null, array $whereConds = null)
     {
         if (null !== self::$onQueryReadyCallback) {
-            call_user_func(self::$onQueryReadyCallback, $method, $query, $markers, $table);
+            call_user_func(self::$onQueryReadyCallback, $method, $query, $markers, $table, $whereConds);
         }
     }
 

@@ -513,6 +513,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.2.0 -- 2017-05-31
+
+    - add whereConds to QuickPdo.setOnQueryReadyCallback for update and delete methods
+    
 - 2.1.0 -- 2017-05-29
 
     - change QuickPdoExceptionTool.isDuplicateEntry signature
