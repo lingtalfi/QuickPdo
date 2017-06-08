@@ -404,6 +404,8 @@ class QuickPdo
     {
         $noError = true;
         $conn = QuickPdo::getConnection();
+        $currentMode = $conn->getAttribute(\PDO::ATTR_ERRMODE);
+        QuickPdo::changeErrorMode(\PDO::ERRMODE_EXCEPTION);
         try {
             $conn->beginTransaction();
             call_user_func($transactionCallback);
@@ -412,6 +414,7 @@ class QuickPdo
             $conn->rollBack();
             $noError = false;
         }
+        QuickPdo::changeErrorMode($currentMode);
         return $noError;
     }
 

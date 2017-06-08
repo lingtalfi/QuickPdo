@@ -507,6 +507,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.4.0 -- 2017-06-08
+
+    - transaction method now switches temporarily to \PDO::ERRMODE_EXCEPTION mode
+    
 - 2.3.0 -- 2017-06-08
 
     - add transaction method
