@@ -366,6 +366,7 @@ false\|array            | fetch ( stmt, array markers?, fetchStyle?)            
 false\|\PDOStatement    | freeQuery( stmt, array markers?)                  | Returns the \PDOStatement query in case of success
 false\|int              | freeStmt( stmt, array markers?)                             | Returns the number of affected lines in case of success
 false\|int              | freeExec( stmt )                                            | Returns the number of affected lines in case of success. This is not a prepared request, it calls pdo->exec directly
+bool                    | transaction( transactionCallback )                        | Executes a transaction and returns whether or not the transaction was successful
 array                   | getErrors( )                                            | Returns an array of errorArray (0: SQLSTATE error code, 1: Driver-specific error code, 2: Driver-specific error message, 3: class method name)
 array                   | getLastError ( )                                            | Returns the last errorArray (see getErrors method for a definition of errorArray)
 string                  | getQuery ( )                                            | Returns the current query
@@ -414,22 +415,15 @@ The PDO error mode affects all (almost) QuickPdo's methods behaviour in case of 
 How to make transaction
 --------------------------
 
-QuickPdo doesn't have special methods for transaction, just use transaction as you would normally do
-
-
 ```php
-$conn = QuickPdo::getConnection();
-try {
-    $conn->beginTransaction();
-    QuickPdo::update('mytable', ['name' => 'Alice'], [
-        ['id', '=', 1],
-    ]);
-    // ...other stuff
-    $conn->commit();
+$transactionSuccessful = QuickPdo::transaction(function(){
 
-} catch (\Exception $e) {
-    $conn->rollBack();
-}
+    QuickPdo::update('mytable', ['name' => 'Alice'], [
+      ['id', '=', 1],
+    ]);
+    // ...other statements of the transaction
+    
+});
 ```
 
 
@@ -512,6 +506,10 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 2.3.0 -- 2017-06-08
+
+    - add transaction method
     
 - 2.2.0 -- 2017-05-31
 

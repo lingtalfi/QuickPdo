@@ -393,6 +393,28 @@ class QuickPdo
         return false;
     }
 
+
+    /**
+     * Execute a transaction.
+     *
+     * @param callable $transactionCallback , a callback containing all the statements of the transaction
+     * @return bool, whether or not the transaction was successful.
+     */
+    public static function transaction(callable $transactionCallback)
+    {
+        $noError = true;
+        $conn = QuickPdo::getConnection();
+        try {
+            $conn->beginTransaction();
+            call_user_func($transactionCallback);
+            $conn->commit();
+        } catch (\Exception $e) {
+            $conn->rollBack();
+            $noError = false;
+        }
+        return $noError;
+    }
+
     //------------------------------------------------------------------------------/
     // 
     //------------------------------------------------------------------------------/
