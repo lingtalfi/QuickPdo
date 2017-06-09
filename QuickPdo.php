@@ -397,10 +397,15 @@ class QuickPdo
     /**
      * Execute a transaction.
      *
+     * Note: pdo temporarily switches to the exception error mode during the transaction.
+     *
+     *
      * @param callable $transactionCallback , a callback containing all the statements of the transaction
+     * @param callable $onException , a callback executed if an exception occurred (and the transaction failed).
+     *                              It receives the exception as its sole argument.
      * @return bool, whether or not the transaction was successful.
      */
-    public static function transaction(callable $transactionCallback)
+    public static function transaction(callable $transactionCallback, callable $onException = null)
     {
         $noError = true;
         $conn = QuickPdo::getConnection();
@@ -413,6 +418,9 @@ class QuickPdo
         } catch (\Exception $e) {
             $conn->rollBack();
             $noError = false;
+            if (null !== $onException) {
+                call_user_func($onException, $e);
+            }
         }
         QuickPdo::changeErrorMode($currentMode);
         return $noError;

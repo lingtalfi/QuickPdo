@@ -426,6 +426,22 @@ $transactionSuccessful = QuickPdo::transaction(function(){
 });
 ```
 
+If you want to catch the exception in case the transaction failed, use the second argument:
+ 
+ 
+```php
+$transactionSuccessful = QuickPdo::transaction(function(){
+
+    QuickPdo::update('mytable', ['name' => 'Alice'], [
+      ['id', '=', 1],
+    ]);
+    // ...other statements of the transaction
+    
+}, function(\Exception $e){
+    // log the exception for instance...
+});
+```
+
 
 How to log every request
 -----------------------
@@ -506,6 +522,10 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 2.5.0 -- 2017-06-09
+
+    - add second argument to transaction method to handle transaction error
     
 - 2.4.0 -- 2017-06-08
 
