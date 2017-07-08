@@ -523,6 +523,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.6.0 -- 2017-07-08
+
+    - add whereConds to QuickPdo::count
+    
 - 2.5.0 -- 2017-06-09
 
     - add second argument to transaction method to handle transaction error

@@ -100,17 +100,24 @@ class QuickPdo
     }
 
     /**
-     * Return false|int
+     * @param $whereConds , see update method
+     * @return false|int
      */
-    public static function count($table)
+    public static function count($table, $whereConds = [])
     {
-        $query = "select count(*) as count from $table";
         $pdo = self::getConnection();
+
+
+        $markers = [];
+        $query = "select count(*) as count from $table";
+        self::addWhereSubStmt($whereConds, $query, $markers);
+
+
         self::$query = $query;
         self::onQueryReady("count", $query, null, $table);
 
         $stmt = $pdo->prepare($query);
-        if (true === $stmt->execute()) {
+        if (true === $stmt->execute($markers)) {
             $res = $stmt->fetch(\PDO::FETCH_ASSOC);
             return (int)$res['count'];
         }
