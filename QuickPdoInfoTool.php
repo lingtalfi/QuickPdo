@@ -210,13 +210,21 @@ and CONSTRAINT_TYPE = 'FOREIGN KEY'
     }
 
 
-    public static function getTables($db)
+    public static function getTables($db, $prefix = null)
     {
         QuickPdo::freeExec("use $db;");
         $query = QuickPdo::getConnection()->query('show tables');
-        return $query->fetchAll(\PDO::FETCH_COLUMN);
+        $tables = $query->fetchAll(\PDO::FETCH_COLUMN);
+        if (null !== $prefix) {
+            $tables = array_filter($tables, function ($v) use ($prefix) {
+                if (0 === strpos($v, $prefix)) {
+                    return true;
+                }
+                return false;
+            });
+        }
+        return $tables;
     }
-
 
 
     public static function isEmptyTable($table)
