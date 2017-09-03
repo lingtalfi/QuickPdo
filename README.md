@@ -523,6 +523,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.8.1 -- 2017-09-03
+
+    - fix QuickPdoInfoTool db and table names escaping
+    
 - 2.8.0 -- 2017-09-03
 
     - add QuickPdoInfoTool.getUniqueIndexes method
