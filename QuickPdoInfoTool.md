@@ -247,6 +247,20 @@ array    getTables ( str:database )
 Return the array of tables for the given database
 
 
+getUniqueIndexes
+-------------
+2017-09-03
+
+
+```php
+array    getUniqueIndexes ( str:table )
+```
+
+Return an array of indexName => indexes.
+
+With indexes being an array of column names ordered by ascending index sequence.
+
+
 
 isEmptyTable
 -------------
