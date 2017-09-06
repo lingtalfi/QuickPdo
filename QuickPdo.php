@@ -260,6 +260,13 @@ class QuickPdo
 
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
+            /**
+             * @todo-ling, maybe return $stmt->rowCount() instead of true?
+             * However, it only works if PDO::MYSQL_ATTR_FOUND_ROWS is set at the connection:
+             *
+             * https://stackoverflow.com/questions/10522520/pdo-were-rows-affected-during-execute-statement
+             * $p = new PDO($dsn, $user, $pass, array(PDO::MYSQL_ATTR_FOUND_ROWS => true));
+             */
             return true;
         }
         self::handleStatementErrors($stmt, 'update');
