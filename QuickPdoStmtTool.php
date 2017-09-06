@@ -139,4 +139,20 @@ class QuickPdoStmtTool
             }
         }
     }
+
+
+    /**
+     * Converts a simple map array (array of key => value) to a pdo whereConds array.
+     *
+     * @param array $where
+     * @return array, the pdoWhere array
+     */
+    public static function simpleWhereToPdoWhere(array $where)
+    {
+        $ret = [];
+        foreach ($where as $k => $v) {
+            $ret[] = [$k, '=', $v];
+        }
+        return $ret;
+    }
 }
