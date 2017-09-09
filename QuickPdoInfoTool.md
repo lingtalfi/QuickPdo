@@ -165,6 +165,24 @@ Return false in case of failure.
 
 
 
+getCreateTable
+-------------
+2017-09-09
+
+
+```php
+array|false    getCreateTable ( str:table )
+```
+
+
+Return an array containing information about the string used to create the table.
+- table: the table name
+- create: the create string used for creating this table
+
+Return false in case of failure.
+
+
+
 getDatabase
 -------------
 2015-12-28

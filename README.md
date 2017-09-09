@@ -523,6 +523,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.10.0 -- 2017-09-09
+
+    - add QuickPdoInfoTool::getCreateTable method
+    
 - 2.9.0 -- 2017-09-06
 
     - add QuickPdoStmtTool::simpleWhereToPdoWhere method

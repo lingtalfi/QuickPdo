@@ -125,6 +125,20 @@ AND TABLE_NAME=:table;
     }
 
 
+    public static function getCreateTable($table)
+    {
+        $table = self::escapeTable($table);
+        $info = QuickPdo::fetch("SHOW CREATE TABLE $table");
+        if (false !== $info) {
+            return [
+                'table' => $info['Table'],
+                'create' => $info['Create Table'],
+            ];
+        }
+        return false;
+    }
+
+
     /**
      * @param $table
      * @return array of indexName => indexes
