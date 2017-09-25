@@ -50,6 +50,7 @@ class QuickPdo
      *
      */
     private static $onQueryReadyCallback;
+    private static $transactionActive = false;
 
     public static function setConnection($dsn, $user, $pass, array $options)
     {
@@ -413,6 +414,9 @@ class QuickPdo
      *
      * Note: pdo temporarily switches to the exception error mode during the transaction.
      *
+     * Note: if you are already inside a transaction, this will just execute the callback
+     * (it will not begin a new transaction)
+     *
      *
      * @param callable $transactionCallback , a callback containing all the statements of the transaction
      * @param callable $onException , a callback executed if an exception occurred (and the transaction failed).
@@ -421,23 +425,38 @@ class QuickPdo
      */
     public static function transaction(callable $transactionCallback, callable $onException = null)
     {
-        $noError = true;
-        $conn = QuickPdo::getConnection();
-        $currentMode = $conn->getAttribute(\PDO::ATTR_ERRMODE);
-        QuickPdo::changeErrorMode(\PDO::ERRMODE_EXCEPTION);
-        try {
-            $conn->beginTransaction();
-            call_user_func($transactionCallback);
-            $conn->commit();
-        } catch (\Exception $e) {
-            $conn->rollBack();
-            $noError = false;
-            if (null !== $onException) {
-                call_user_func($onException, $e);
+        if (false === self::$transactionActive) {
+
+
+            $noError = true;
+            $conn = QuickPdo::getConnection();
+            $currentMode = $conn->getAttribute(\PDO::ATTR_ERRMODE);
+            QuickPdo::changeErrorMode(\PDO::ERRMODE_EXCEPTION);
+            try {
+                $conn->beginTransaction();
+                self::$transactionActive = true;
+
+                call_user_func($transactionCallback);
+                $conn->commit();
+            } catch (\Exception $e) {
+                $conn->rollBack();
+                $noError = false;
+                if (null !== $onException) {
+                    call_user_func($onException, $e);
+                }
+            }
+            QuickPdo::changeErrorMode($currentMode);
+            return $noError;
+
+        } else {
+            try {
+                call_user_func($transactionCallback);
+            } catch (\Exception $e) {
+                if (null !== $onException) {
+                    call_user_func($onException, $e);
+                }
             }
         }
-        QuickPdo::changeErrorMode($currentMode);
-        return $noError;
     }
 
     //------------------------------------------------------------------------------/
