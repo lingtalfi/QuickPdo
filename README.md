@@ -275,6 +275,28 @@ $rows = QuickPdo::update(
 );
 
 ``````
+
+
+#### Mixing where syntax forms 
+  
+  
+```php
+        
+        
+QuickPdo::update("ek_user_has_product", [
+    "deleted_date" => date("Y-m-d H:i:s"),
+], [
+    ["user_id", "=", $userId],
+    " and deleted_date is null",
+]);
+
+
+// Will translate to:
+// update ek_user_has_product set `deleted_date`=:deleted_date WHERE `user_id` = :bzz_0 and deleted_date is null
+
+
+
+``````
   
 
 ### Replace
