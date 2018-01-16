@@ -15,7 +15,6 @@ class QuickPdoListInfoUtil
     /**
      * If null, means all columns allowed
      */
-    private $allowedCols;
     private $allowedSorts;
     private $allowedFilters;
 
@@ -26,7 +25,6 @@ class QuickPdoListInfoUtil
         $this->queryCols = [];
         //
         $this->allowedFilters = null;
-        $this->allowedCols = null;
         $this->allowedSorts = null;
     }
 
@@ -44,12 +42,6 @@ class QuickPdoListInfoUtil
     public function setQueryCols(array $queryCols)
     {
         $this->queryCols = $queryCols;
-        return $this;
-    }
-
-    public function setAllowedCols(array $allowedCols)
-    {
-        $this->allowedCols = $allowedCols;
         return $this;
     }
 

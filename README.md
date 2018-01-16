@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.14.1 -- 2018-01-16
+
+    - removed QuickPdoListInfoUtil.allowedCols property
+    
 - 2.14.0 -- 2018-01-16
 
     - enhance QuickPdoListInfoUtil.render now return nipp
