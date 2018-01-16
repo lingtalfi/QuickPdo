@@ -495,6 +495,7 @@ The QuickPdo planet includes some other classes that achieve various tasks:
 - [QuickPdoInfoTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md): a general companion for QuickPdo 
 - [QuickPdoStmtTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoStmtTool.md): to manipulate statements
 - [QuickPdoInfoCacheUtil](https://github.com/lingtalfi/QuickPdo/blob/master/Util/QuickPdoInfoCacheUtil.md): a caching wrapper for QuickPdoInfoTool
+- [QuickPdoListInfoUtil](https://github.com/lingtalfi/QuickPdo/blob/master/Util/QuickPdoListInfoUtil.md): a tool to generate the info necessary to display a list
 
 
 
@@ -549,6 +550,10 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 2.13.0 -- 2018-01-16
+
+    - add QuickPdoListInfoUtil object
     
 - 2.12.0 -- 2017-10-17
 
