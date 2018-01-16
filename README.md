@@ -110,6 +110,11 @@ $rows = QuickPdo::fetchAll($stmt, [
     'name' => '%'. str_replace('%','\%', $thename) .'%',
 ]);
 
+
+// or, if you don't want to allow the _ wildcard either, use the following
+$rows = QuickPdo::fetchAll($stmt, [
+    'name' => '%' . str_replace(['%', '_'], ['\%', '\_'], $thename) . '%',
+]);
 ```
 
 #### Fetch all to one dimensional array grouped by id example 
