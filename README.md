@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.13.1 -- 2018-01-16
+
+    - add QuickPdoListInfoUtil.nbPages property
+    
 - 2.13.0 -- 2018-01-16
 
     - add QuickPdoListInfoUtil object

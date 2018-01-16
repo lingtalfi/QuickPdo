@@ -163,6 +163,7 @@ class QuickPdoListInfoUtil
 
         // LIMIT
         //--------------------------------------------
+        $maxPage = 1;
         if ($nbItems > 0 && $nipp > 0) {
             $maxPage = ceil($nbItems / $nipp);
             if ($maxPage > 0) {
@@ -189,6 +190,7 @@ class QuickPdoListInfoUtil
             'sort' => $realSorts,
             'filters' => $realFilters,
             'nbItems' => $nbItems,
+            'nbPages' => $maxPage,
         ];
     }
 }
