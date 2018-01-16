@@ -191,6 +191,7 @@ class QuickPdoListInfoUtil
             'filters' => $realFilters,
             'nbItems' => $nbItems,
             'nbPages' => $maxPage,
+            'nipp' => $nipp,
         ];
     }
 }
