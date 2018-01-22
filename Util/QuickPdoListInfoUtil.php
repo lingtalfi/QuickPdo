@@ -171,7 +171,6 @@ class QuickPdoListInfoUtil
         }
 
 
-
         $q = sprintf($q, self::getQueryColsAsString($this->queryCols));
 
 
@@ -196,6 +195,11 @@ class QuickPdoListInfoUtil
     private static function getQueryColsAsString(array $queryCols)
     {
         $queryCols = array_map(function ($v) {
+
+            if (false !== stripos($v, "concat")) {
+                return $v;
+            }
+
             if (false === strpos($v, '`')) {
 
                 $q = preg_split('! as !u', $v, 2);

@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.14.3 -- 2018-01-22
+
+    - enhance QuickPdoListInfoUtil now handles concat
+    
 - 2.14.2 -- 2018-01-22
 
     - enhance QuickPdoListInfoUtil now handles aliases and dot notation
