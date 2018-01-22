@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.14.4 -- 2018-01-22
+
+    - fix QuickPdoListInfoUtil double where error
+    
 - 2.14.3 -- 2018-01-22
 
     - enhance QuickPdoListInfoUtil now handles concat

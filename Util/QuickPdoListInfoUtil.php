@@ -108,7 +108,11 @@ class QuickPdoListInfoUtil
             }
         }
         if ($realFilters) {
-            $q .= " where ";
+            if (false === stripos($q, 'where ')) {
+                $q .= " where ";
+            } else {
+                $q .= ' and ';
+            }
             $c = 0;
             foreach ($realFilters as $col => $value) {
                 if (0 !== $c) {
