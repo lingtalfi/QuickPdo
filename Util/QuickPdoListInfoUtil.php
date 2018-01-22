@@ -152,7 +152,6 @@ class QuickPdoListInfoUtil
             }
         }
 
-
         // LIMIT
         //--------------------------------------------
         $maxPage = 1;
@@ -172,7 +171,10 @@ class QuickPdoListInfoUtil
         }
 
 
-        $q = sprintf($q, '`' . implode('`, `', $this->queryCols) . '`');
+
+        $q = sprintf($q, self::getQueryColsAsString($this->queryCols));
+
+
         $rows = QuickPdo::fetchAll($q, $markers);
 
 
@@ -185,5 +187,41 @@ class QuickPdoListInfoUtil
             'nbPages' => $maxPage,
             'nipp' => $nipp,
         ];
+    }
+
+
+    //--------------------------------------------
+    //
+    //--------------------------------------------
+    private static function getQueryColsAsString(array $queryCols)
+    {
+        $queryCols = array_map(function ($v) {
+            if (false === strpos($v, '`')) {
+
+                $q = preg_split('! as !u', $v, 2);
+                if (count($q) > 1) {
+                    $p = explode('.', $q[0], 2);
+                    if (count($p) > 1) {
+                        $s = $p[0] . '.`' . $p[1] . '` as ' . $q[1];
+                    } else {
+                        $s = $p[0] . '.`' . $p[1] . '`';
+                    }
+                } else {
+                    $p = explode('.', $q[0], 2);
+                    if (count($p) > 1) {
+                        $s = $p[0] . '.`' . $p[1] . '`';
+                    } else {
+                        $s = '`' . $p[0] . '`';
+                    }
+                }
+                return $s;
+            } else {
+                // the user takes care of escaping manually
+                return $v;
+            }
+        }, $queryCols);
+
+        $s = implode(", ", $queryCols);
+        return $s;
     }
 }
