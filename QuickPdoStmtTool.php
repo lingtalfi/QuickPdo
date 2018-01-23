@@ -130,7 +130,13 @@ class QuickPdoStmtTool
         if ($keys2Values) {
             $mkCpt = 0;
             $mk = 'bzz_';
-            $stmt .= ' WHERE ';
+            if (false === stripos($stmt, 'where ')) {
+                $stmt .= ' WHERE ';
+            }
+            else{
+                $stmt .= ' AND ';
+            }
+
             $first = true;
             foreach ($keys2Values as $key => $val) {
                 if (true === $first) {

@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.14.6 -- 2018-01-23
+
+    - enhance QuickPdoStmtTool.addWhereEqualsSubStmt now handles some cases with WHERE in the query
+    
 - 2.14.5 -- 2018-01-23
 
     - fix QuickPdoListInfoUtil now makes distinction between symbolic and concrete column names
