@@ -10,6 +10,7 @@ class QuickPdoListInfoUtil
 
     private $querySkeleton;
     private $queryCols;
+    private $realColumnMap;
 
 
     /**
@@ -23,6 +24,7 @@ class QuickPdoListInfoUtil
     {
         $this->querySkeleton = "";
         $this->queryCols = [];
+        $this->realColumnMap = [];
         //
         $this->allowedFilters = null;
         $this->allowedSorts = null;
@@ -57,6 +59,12 @@ class QuickPdoListInfoUtil
         return $this;
     }
 
+    public function setRealColumnMap(array $realColumnMap)
+    {
+        $this->realColumnMap = $realColumnMap;
+        return $this;
+    }
+
 
     //--------------------------------------------
     //
@@ -82,6 +90,7 @@ class QuickPdoListInfoUtil
         $allowedFilter = $this->allowedFilters;
 
         $sort = $params['sort'];
+//        az($sort);
         $filters = $params['filters'];
         $page = $params['page'];
         $nipp = (int)$params['nipp'];
@@ -100,9 +109,12 @@ class QuickPdoListInfoUtil
         // FILTERING
         //--------------------------------------------
         $realFilters = [];
+        $symbolicFilters = [];
         if ($filters) {
             foreach ($filters as $col => $value) {
                 if (null === $allowedFilter || in_array($col, $allowedFilter, true)) {
+                    $symbolicFilters[$col] = $value;
+                    $col = $this->getRealColumnName($col);
                     $realFilters[$col] = $value;
                 }
             }
@@ -135,10 +147,13 @@ class QuickPdoListInfoUtil
         // SORT
         //--------------------------------------------
         $realSorts = [];
+        $symbolicSorts = [];
         if ($sort) {
             foreach ($sort as $col => $dir) {
                 if (null === $allowedSort || in_array($col, $allowedSort, true)) {
                     if ('asc' === $dir || 'desc' === $dir) {
+                        $symbolicSorts[$col] = $dir;
+                        $col = $this->getRealColumnName($col);
                         $realSorts[$col] = $dir;
                     }
                 }
@@ -189,6 +204,8 @@ class QuickPdoListInfoUtil
             'nbItems' => $nbItems,
             'nbPages' => $maxPage,
             'nipp' => $nipp,
+            'symbolicFilters' => $symbolicFilters,
+            'symbolicSorts' => $symbolicSorts,
         ];
     }
 
@@ -231,5 +248,13 @@ class QuickPdoListInfoUtil
 
         $s = implode(", ", $queryCols);
         return $s;
+    }
+
+    private function getRealColumnName($column)
+    {
+        if (array_key_exists($column, $this->realColumnMap)) {
+            return $this->realColumnMap[$column];
+        }
+        return $column;
     }
 }

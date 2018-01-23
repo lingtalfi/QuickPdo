@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.14.5 -- 2018-01-23
+
+    - fix QuickPdoListInfoUtil now makes distinction between symbolic and concrete column names
+    
 - 2.14.4 -- 2018-01-22
 
     - fix QuickPdoListInfoUtil double where error
