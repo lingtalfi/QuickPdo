@@ -132,8 +132,7 @@ class QuickPdoStmtTool
             $mk = 'bzz_';
             if (false === stripos($stmt, 'where ')) {
                 $stmt .= ' WHERE ';
-            }
-            else{
+            } else {
                 $stmt .= ' AND ';
             }
 
@@ -144,11 +143,28 @@ class QuickPdoStmtTool
                 } else {
                     $stmt .= ' AND ';
                 }
-                if (null !== $val) {
-                    $stmt .= $tablePrefix . '`' . $key . '` = :' . $mk . $mkCpt;
-                    $markers[':' . $mk . $mkCpt] = $val;
+
+                if ('' === $tablePrefix) {
+                    $p = explode(".", $key, 2);
+                    if (count($p) < 2) {
+                        $keyVal = '`' . $key . '`';
+                    } else {
+                        $keyVal = $p[0] . '.`' . $p[1] . '`';
+                    }
+
+                    if (null !== $val) {
+                        $stmt .= $keyVal . ' = :' . $mk . $mkCpt;
+                        $markers[':' . $mk . $mkCpt] = $val;
+                    } else {
+                        $stmt .= $keyVal . ' IS NULL';
+                    }
                 } else {
-                    $stmt .= $tablePrefix . '`' . $key . '` IS NULL';
+                    if (null !== $val) {
+                        $stmt .= $tablePrefix . '`' . $key . '` = :' . $mk . $mkCpt;
+                        $markers[':' . $mk . $mkCpt] = $val;
+                    } else {
+                        $stmt .= $tablePrefix . '`' . $key . '` IS NULL';
+                    }
                 }
 
                 $mkCpt++;

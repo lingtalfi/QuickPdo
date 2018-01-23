@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.14.7 -- 2018-01-23
+
+    - enhance QuickPdoStmtTool.addWhereEqualsSubStmt now handles some dot notation
+    
 - 2.14.6 -- 2018-01-23
 
     - enhance QuickPdoStmtTool.addWhereEqualsSubStmt now handles some cases with WHERE in the query
