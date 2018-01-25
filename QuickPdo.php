@@ -2,6 +2,8 @@
 
 namespace QuickPdo;
 
+use QuickPdo\Exception\QuickPdoException;
+
 
 /**
  * QuickPdo
@@ -417,11 +419,17 @@ class QuickPdo
      * Note: if you are already inside a transaction, this will just execute the callback
      * (it will not begin a new transaction)
      *
+     * By default, if the transaction fails, an exception will be thrown (onException=null).
+     * If you set onException to a callable, then your callable will be executed.
+     * With any other value for onException, the transaction will silently fail.
+     *
+     *
      *
      * @param callable $transactionCallback , a callback containing all the statements of the transaction
      * @param callable $onException , a callback executed if an exception occurred (and the transaction failed).
      *                              It receives the exception as its sole argument.
      * @return bool, whether or not the transaction was successful.
+     * @throws \Exception
      */
     public static function transaction(callable $transactionCallback, callable $onException = null)
     {
@@ -453,7 +461,11 @@ class QuickPdo
                 call_user_func($transactionCallback);
             } catch (\Exception $e) {
                 if (null !== $onException) {
-                    call_user_func($onException, $e);
+                    if (is_callable($onException)) {
+                        call_user_func($onException, $e);
+                    }
+                } else {
+                    throw $e;
                 }
             }
         }
