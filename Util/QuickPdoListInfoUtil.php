@@ -113,9 +113,11 @@ class QuickPdoListInfoUtil
         if ($filters) {
             foreach ($filters as $col => $value) {
                 if (null === $allowedFilter || in_array($col, $allowedFilter, true)) {
-                    $symbolicFilters[$col] = $value;
-                    $col = $this->getRealColumnName($col);
-                    $realFilters[$col] = $value;
+                    if ('' !== $value) {
+                        $symbolicFilters[$col] = $value;
+                        $col = $this->getRealColumnName($col);
+                        $realFilters[$col] = $value;
+                    }
                 }
             }
         }
@@ -131,7 +133,14 @@ class QuickPdoListInfoUtil
                     $q .= " and ";
                 }
                 $marker = "mark$c";
-                $q .= "$col like :$marker";
+
+                $z = explode(".", $col, 2);
+                if (1 === count($z)) {
+                    $q .= "`$col` like :$marker";
+                } else {
+                    $q .= $z[0] . ".`" . $z[1] . "` like :$marker";
+                }
+
                 $markers[$marker] = '%' . str_replace(['%', '_'], ['\%', '\_'], $value) . '%';
                 $c++;
             }
@@ -142,7 +151,6 @@ class QuickPdoListInfoUtil
         //--------------------------------------------
         $qCount = sprintf($q, 'count(*) as count');
         $nbItems = (int)QuickPdo::fetch($qCount, $markers, \PDO::FETCH_COLUMN);
-
 
         // SORT
         //--------------------------------------------
@@ -165,7 +173,13 @@ class QuickPdoListInfoUtil
                     if (0 !== $c) {
                         $q .= ', ';
                     }
-                    $q .= "$col $dir";
+                    $z = explode(".", $col, 2);
+                    if (1 === count($z)) {
+                        $q .= "`$col` $dir";
+                    } else {
+                        $q .= $z[0] . ".`" . $z[1] . "` $dir";
+                    }
+
                     $c++;
                 }
             }
@@ -191,7 +205,6 @@ class QuickPdoListInfoUtil
 
 
         $q = sprintf($q, self::getQueryColsAsString($this->queryCols));
-
 
         $rows = QuickPdo::fetchAll($q, $markers);
 

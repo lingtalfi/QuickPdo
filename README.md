@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.16.0 -- 2018-01-25
+
+    - fiw QuickPdoListInfoUtil.execute better filters and sort handling (escaping of names)
+    
 - 2.15.0 -- 2018-01-25
 
     - now QuickPdo::transaction throws an exception by default in case of failed transaction
