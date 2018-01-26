@@ -152,6 +152,7 @@ class QuickPdoListInfoUtil
         $qCount = sprintf($q, 'count(*) as count');
         $nbItems = (int)QuickPdo::fetch($qCount, $markers, \PDO::FETCH_COLUMN);
 
+
         // SORT
         //--------------------------------------------
         $realSorts = [];
@@ -205,7 +206,6 @@ class QuickPdoListInfoUtil
 
 
         $q = sprintf($q, self::getQueryColsAsString($this->queryCols));
-
         $rows = QuickPdo::fetchAll($q, $markers);
 
 
@@ -242,7 +242,7 @@ class QuickPdoListInfoUtil
                     if (count($p) > 1) {
                         $s = $p[0] . '.`' . $p[1] . '` as ' . $q[1];
                     } else {
-                        $s = $p[0] . '.`' . $p[1] . '`';
+                        $s = '`' . $q[0] . '` as ' . $q[1];
                     }
                 } else {
                     $p = explode('.', $q[0], 2);
@@ -258,7 +258,6 @@ class QuickPdoListInfoUtil
                 return $v;
             }
         }, $queryCols);
-
         $s = implode(", ", $queryCols);
         return $s;
     }
