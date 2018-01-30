@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.17.0 -- 2018-01-30
+
+    - add QuickPdoHelper object 
+    
 - 2.16.1 -- 2018-01-26
 
     - enhance QuickPdoListInfoUtil.execute: more robust edge cases code handling 
