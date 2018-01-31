@@ -52,6 +52,12 @@ class QuickPdo
      *
      */
     private static $onQueryReadyCallback;
+    /**
+     * same as $onQueryReadyCallback, but only for methods that alter the data in the
+     * database (insert, update, replace, delete), and only if the method was executed properly.
+     */
+    private static $onDataAlterAfterCallback;
+
     private static $transactionActive = false;
 
     public static function setConnection($dsn, $user, $pass, array $options)
@@ -91,6 +97,15 @@ class QuickPdo
     public static function setOnQueryReadyCallback($fn)
     {
         self::$onQueryReadyCallback = $fn;
+    }
+
+
+    /**
+     * @param $fn ( query, array markers=[] )
+     */
+    public static function setOnDataAlterAfterCallback($fn)
+    {
+        self::$onDataAlterAfterCallback = $fn;
     }
 
 
@@ -159,6 +174,7 @@ class QuickPdo
         self::onQueryReady('insert', $query, $markers, $table);
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
+            self::onDataAlterAfter('insert', $query, $markers, $table);
             return $pdo->lastInsertId();
         }
         self::handleStatementErrors($stmt, 'insert');
@@ -192,6 +208,7 @@ class QuickPdo
         self::onQueryReady('replace', $query, $markers, $table);
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
+            self::onDataAlterAfter('replace', $query, $markers, $table);
             return true;
         }
         self::handleStatementErrors($stmt, 'replace');
@@ -270,6 +287,7 @@ class QuickPdo
              * https://stackoverflow.com/questions/10522520/pdo-were-rows-affected-during-execute-statement
              * $p = new PDO($dsn, $user, $pass, array(PDO::MYSQL_ATTR_FOUND_ROWS => true));
              */
+            self::onDataAlterAfter('update', $query, $markers, $table);
             return true;
         }
         self::handleStatementErrors($stmt, 'update');
@@ -494,6 +512,13 @@ class QuickPdo
     //
     //--------------------------------------------
     protected static function onQueryReady($method, $query, array $markers = null, $table = null, array $whereConds = null)
+    {
+        if (null !== self::$onQueryReadyCallback) {
+            call_user_func(self::$onQueryReadyCallback, $method, $query, $markers, $table, $whereConds);
+        }
+    }
+
+    protected static function onDataAlterAfter($method, $query, array $markers = null, $table = null, array $whereConds = null)
     {
         if (null !== self::$onQueryReadyCallback) {
             call_user_func(self::$onQueryReadyCallback, $method, $query, $markers, $table, $whereConds);

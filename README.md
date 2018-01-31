@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.18.0 -- 2018-01-31
+
+    - add QuickPdo::setOnDataAlterAfterCallback method
+    
 - 2.17.0 -- 2018-01-30
 
     - add QuickPdoHelper object 
