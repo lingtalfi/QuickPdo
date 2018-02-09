@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.19.0 -- 2018-02-09
+
+    - enhance QuickPdoListInfoUtil::setRealColumnMap, columnMap syntax now accepts array of column names
+    
 - 2.18.0 -- 2018-01-31
 
     - add QuickPdo::setOnDataAlterAfterCallback method

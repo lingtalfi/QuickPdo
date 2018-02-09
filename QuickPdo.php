@@ -520,8 +520,8 @@ class QuickPdo
 
     protected static function onDataAlterAfter($method, $query, array $markers = null, $table = null, array $whereConds = null)
     {
-        if (null !== self::$onQueryReadyCallback) {
-            call_user_func(self::$onQueryReadyCallback, $method, $query, $markers, $table, $whereConds);
+        if (null !== self::$onDataAlterAfterCallback) {
+            call_user_func(self::$onDataAlterAfterCallback, $method, $query, $markers, $table, $whereConds);
         }
     }
 

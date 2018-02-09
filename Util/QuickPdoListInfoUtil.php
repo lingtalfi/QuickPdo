@@ -59,6 +59,11 @@ class QuickPdoListInfoUtil
         return $this;
     }
 
+    /**
+     * @param array $realColumnMap
+     *      array of symbolicColName => realColName | arr:realColNames
+     * @return $this
+     */
     public function setRealColumnMap(array $realColumnMap)
     {
         $this->realColumnMap = $realColumnMap;
@@ -100,7 +105,6 @@ class QuickPdoListInfoUtil
         // REQUEST
         //--------------------------------------------
 
-
         if ($page < 1) {
             $page = 1;
         }
@@ -116,7 +120,7 @@ class QuickPdoListInfoUtil
                     if ('' !== $value) {
                         $symbolicFilters[$col] = $value;
                         $col = $this->getRealColumnName($col);
-                        $realFilters[$col] = $value;
+                        $realFilters[] = [$col, $value];
                     }
                 }
             }
@@ -128,23 +132,52 @@ class QuickPdoListInfoUtil
                 $q .= ' and ';
             }
             $c = 0;
-            foreach ($realFilters as $col => $value) {
+            foreach ($realFilters as $info) {
+
+                list($col, $value) = $info;
+                if (!is_array($col)) {
+                    $col = [$col];
+                }
+
                 if (0 !== $c) {
                     $q .= " and ";
                 }
                 $marker = "mark$c";
 
-                $z = explode(".", $col, 2);
-                if (1 === count($z)) {
-                    $q .= "`$col` like :$marker";
-                } else {
-                    $q .= $z[0] . ".`" . $z[1] . "` like :$marker";
+
+                $group = (count($col) > 1);
+
+
+                if ($group) {
+                    $q .= '(';
                 }
 
-                $markers[$marker] = '%' . str_replace(['%', '_'], ['\%', '\_'], $value) . '%';
+
+                $counter = 0;
+                foreach ($col as $realColName) {
+                    if (true === $group && 0 !== $counter) {
+                        $q .= ' or ';
+                    }
+                    $z = explode(".", $realColName, 2);
+                    if (1 === count($z)) {
+                        $q .= "`$realColName` like :$marker";
+                    } else {
+                        $q .= $z[0] . ".`" . $z[1] . "` like :$marker";
+                    }
+
+                    $markers[$marker] = '%' . str_replace(['%', '_'], ['\%', '\_'], $value) . '%';
+                    $counter++;
+                }
+
+                if ($group) {
+                    $q .= ')';
+                }
+
+
                 $c++;
             }
         }
+
 
 
         // COUNT QUERY
