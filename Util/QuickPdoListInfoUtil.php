@@ -2,23 +2,18 @@
 
 namespace QuickPdo\Util;
 
-
 use QuickPdo\QuickPdo;
 
 class QuickPdoListInfoUtil
 {
-
     private $querySkeleton;
     private $queryCols;
     private $realColumnMap;
-
-
     /**
      * If null, means all columns allowed
      */
     private $allowedSorts;
     private $allowedFilters;
-
 
     public function __construct()
     {
@@ -69,8 +64,6 @@ class QuickPdoListInfoUtil
         $this->realColumnMap = $realColumnMap;
         return $this;
     }
-
-
     //--------------------------------------------
     //
     //--------------------------------------------
@@ -82,34 +75,24 @@ class QuickPdoListInfoUtil
             "page" => 1,
             "nipp" => 20,
         ], $params);
-
         $markers = [];
-
         //--------------------------------------------
         // CONF
         //--------------------------------------------
         $q = $this->querySkeleton;
-
-
         $allowedSort = $this->allowedSorts;
         $allowedFilter = $this->allowedFilters;
-
         $sort = $params['sort'];
 //        az($sort);
         $filters = $params['filters'];
         $page = $params['page'];
         $nipp = (int)$params['nipp'];
-
-
         //--------------------------------------------
         // REQUEST
         //--------------------------------------------
-
         if ($page < 1) {
             $page = 1;
         }
-
-
         // FILTERING
         //--------------------------------------------
         $realFilters = [];
@@ -133,26 +116,18 @@ class QuickPdoListInfoUtil
             }
             $c = 0;
             foreach ($realFilters as $info) {
-
                 list($col, $value) = $info;
                 if (!is_array($col)) {
                     $col = [$col];
                 }
-
                 if (0 !== $c) {
                     $q .= " and ";
                 }
                 $marker = "mark$c";
-
-
                 $group = (count($col) > 1);
-
-
                 if ($group) {
                     $q .= '(';
                 }
-
-
                 $counter = 0;
                 foreach ($col as $realColName) {
                     if (true === $group && 0 !== $counter) {
@@ -164,28 +139,19 @@ class QuickPdoListInfoUtil
                     } else {
                         $q .= $z[0] . ".`" . $z[1] . "` like :$marker";
                     }
-
                     $markers[$marker] = '%' . str_replace(['%', '_'], ['\%', '\_'], $value) . '%';
                     $counter++;
                 }
-
                 if ($group) {
                     $q .= ')';
                 }
-
-
                 $c++;
             }
         }
-
-
-
         // COUNT QUERY
         //--------------------------------------------
         $qCount = sprintf($q, 'count(*) as count');
         $nbItems = (int)QuickPdo::fetch($qCount, $markers, \PDO::FETCH_COLUMN);
-
-
         // SORT
         //--------------------------------------------
         $realSorts = [];
@@ -196,6 +162,9 @@ class QuickPdoListInfoUtil
                     if ('asc' === $dir || 'desc' === $dir) {
                         $symbolicSorts[$col] = $dir;
                         $col = $this->getRealColumnName($col);
+                        if (is_array($col)) {
+                            $col = array_shift($col);
+                        }
                         $realSorts[$col] = $dir;
                     }
                 }
@@ -213,12 +182,10 @@ class QuickPdoListInfoUtil
                     } else {
                         $q .= $z[0] . ".`" . $z[1] . "` $dir";
                     }
-
                     $c++;
                 }
             }
         }
-
         // LIMIT
         //--------------------------------------------
         $maxPage = 1;
@@ -231,17 +198,12 @@ class QuickPdoListInfoUtil
                 if ($page > $maxPage) {
                     $page = $maxPage;
                 }
-
                 $offset = ($page - 1) * $nipp;
                 $q .= " limit $offset, $nipp";
             }
         }
-
-
         $q = sprintf($q, self::getQueryColsAsString($this->queryCols));
         $rows = QuickPdo::fetchAll($q, $markers);
-
-
         return [
             'rows' => $rows,
             'page' => $page,
@@ -254,21 +216,16 @@ class QuickPdoListInfoUtil
             'symbolicSorts' => $symbolicSorts,
         ];
     }
-
-
     //--------------------------------------------
     //
     //--------------------------------------------
     private static function getQueryColsAsString(array $queryCols)
     {
         $queryCols = array_map(function ($v) {
-
             if (false !== stripos($v, "concat")) {
                 return $v;
             }
-
             if (false === strpos($v, '`')) {
-
                 $q = preg_split('! as !u', $v, 2);
                 if (count($q) > 1) {
                     $p = explode('.', $q[0], 2);
