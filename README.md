@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.19.2 -- 2018-02-15
+
+    - fix QuickPdoInfoTool::getAutoIncrementedField, problem with unescaped tables 
+    
 - 2.19.1 -- 2018-02-09
 
     - fix QuickPdoListInfoUtil::execute, problem with sort handling due to new columnMap syntax 

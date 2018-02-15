@@ -27,9 +27,12 @@ class QuickPdoInfoTool
     {
         if (null !== $schema) {
             $table = '`' . $schema . '`.`' . $table . '`';
+        } else {
+            $table = '`' . $table . '`';
         }
 
-        if (false !== ($rows = QuickPdo::fetchAll("show columns from $table where extra='auto_increment'"))) {
+        $q = "show columns from $table where extra='auto_increment'";
+        if (false !== ($rows = QuickPdo::fetchAll($q))) {
             if (array_key_exists(0, $rows)) {
                 return $rows[0]['Field'];
             }
@@ -55,7 +58,6 @@ class QuickPdoInfoTool
         }
         return false;
     }
-
 
 
     public static function getColumnDefaultValues($table)
