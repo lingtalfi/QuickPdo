@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.20.1 -- 2018-02-16
+
+    - fix QuickPdo insert/update/replace handling of table names containing spaces 
+    
 - 2.20.0 -- 2018-02-16
 
     - add QuickPdoInfoTool::getPrimaryKey optional third argument: returnAllIfEmpty 

@@ -156,7 +156,9 @@ class QuickPdo
      */
     public static function insert($table, array $fields, $keyword = '')
     {
-        $query = 'insert ' . $keyword . ' into ' . $table . ' set ';
+
+        $protectTable = self::protectTable($table);
+        $query = 'insert ' . $keyword . ' into ' . $protectTable . ' set ';
         $first = true;
         $markers = [];
         foreach ($fields as $k => $v) {
@@ -189,7 +191,8 @@ class QuickPdo
      */
     public static function replace($table, array $fields, $keyword = '')
     {
-        $query = 'replace ' . $keyword . ' into ' . $table . ' set ';
+        $protectTable = self::protectTable($table);
+        $query = 'replace ' . $keyword . ' into ' . $protectTable . ' set ';
         $first = true;
         $markers = [];
         foreach ($fields as $k => $v) {
@@ -254,8 +257,9 @@ class QuickPdo
      */
     public static function update($table, array $fields, $whereConds = [], array $extraMarkers = [])
     {
+        $protectTable = self::protectTable($table);
         $pdo = self::getConnection();
-        $query = 'update ' . $table . ' set ';
+        $query = 'update ' . $protectTable . ' set ';
         $markers = [];
         $first = true;
         foreach ($fields as $k => $v) {
@@ -546,5 +550,10 @@ class QuickPdo
         if (0 !== (int)$conn->errorInfo()[1]) {
             self::$errors[] = array_merge($conn->errorInfo(), [$methodName]);
         }
+    }
+
+    private static function protectTable($table)
+    {
+        return '`' . $table . '`';
     }
 }
