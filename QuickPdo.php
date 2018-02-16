@@ -311,8 +311,9 @@ class QuickPdo
     public static function delete($table, $whereConds = [])
     {
 
+        $protectTable = self::protectTable($table);
         $pdo = self::getConnection();
-        $query = 'delete from ' . $table;
+        $query = 'delete from ' . $protectTable;
         $markers = [];
         self::addWhereSubStmt($whereConds, $query, $markers);
         self::$query = $query;
