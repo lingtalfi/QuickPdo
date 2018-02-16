@@ -243,7 +243,7 @@ and CONSTRAINT_TYPE = 'FOREIGN KEY'
     }
 
 
-    public static function getPrimaryKey($table, $schema = null)
+    public static function getPrimaryKey($table, $schema = null, $returnAllIfEmpty = false)
     {
         if (null === $schema) {
             $schema = self::getDatabase();
@@ -254,6 +254,9 @@ and CONSTRAINT_TYPE = 'FOREIGN KEY'
             foreach ($rows as $info) {
                 $ret[] = $info['Column_name'];
             }
+        }
+        if (true === $returnAllIfEmpty && 0 === count($ret)) {
+            $ret = QuickPdoInfoTool::getColumnNames($table, $schema);
         }
         return $ret;
     }

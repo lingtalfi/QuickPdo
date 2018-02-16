@@ -232,10 +232,12 @@ getPrimaryKey
 
 
 ```php
-array    getPrimaryKey ( str:table, str:schema=null )
+array    getPrimaryKey ( str:table, str:schema=null, bool:returnAllIfEmpty=false )
 ```
 
 Return an array containing the column(s) in the primary key.
+If returnAllIfEmpty is set to true and the table doesn't contain a primary key,
+all columns are returned.
 
 
 getForeignKeysInfo
