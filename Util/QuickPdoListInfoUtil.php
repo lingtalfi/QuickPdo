@@ -152,6 +152,7 @@ class QuickPdoListInfoUtil
         //--------------------------------------------
         $qCount = sprintf($q, 'count(*) as count');
         $nbItems = (int)QuickPdo::fetch($qCount, $markers, \PDO::FETCH_COLUMN);
+
         // SORT
         //--------------------------------------------
         $realSorts = [];
@@ -202,7 +203,10 @@ class QuickPdoListInfoUtil
                 $q .= " limit $offset, $nipp";
             }
         }
+
+
         $q = sprintf($q, self::getQueryColsAsString($this->queryCols));
+        az(__FILE__, $q);
         $rows = QuickPdo::fetchAll($q, $markers);
         return [
             'rows' => $rows,

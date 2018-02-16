@@ -258,6 +258,8 @@ and CONSTRAINT_TYPE = 'FOREIGN KEY'
         if (true === $returnAllIfEmpty && 0 === count($ret)) {
             $hasPrimaryKey = false;
             $ret = QuickPdoInfoTool::getColumnNames($table, $schema);
+        } else {
+            $hasPrimaryKey = true;
         }
         return $ret;
     }

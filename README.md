@@ -553,6 +553,10 @@ History Log
     
 - 2.20.2 -- 2018-02-16
 
+    - fix QuickPdoInfoTool::getPrimaryKey setting hasPrimaryKey flag erroneously 
+    
+- 2.20.2 -- 2018-02-16
+
     - fix QuickPdo delete handling of table names containing spaces 
     
 - 2.20.1 -- 2018-02-16
