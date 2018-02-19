@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.20.3 -- 2018-02-19
+
+    - enhance QuickPdoInfoTool.getQueryColsAsString internal formatting for debug purposes 
+    
 - 2.20.2 -- 2018-02-16
 
     - fix QuickPdoInfoTool::getPrimaryKey setting hasPrimaryKey flag erroneously 

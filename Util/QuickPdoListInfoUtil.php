@@ -206,7 +206,7 @@ class QuickPdoListInfoUtil
 
 
         $q = sprintf($q, self::getQueryColsAsString($this->queryCols));
-        az(__FILE__, $q);
+//        az(__FILE__, $q);
         $rows = QuickPdo::fetchAll($q, $markers);
         return [
             'rows' => $rows,
@@ -226,8 +226,9 @@ class QuickPdoListInfoUtil
     private static function getQueryColsAsString(array $queryCols)
     {
         $queryCols = array_map(function ($v) {
+
             if (false !== stripos($v, "concat")) {
-                return $v;
+                return $v . PHPEO;
             }
             if (false === strpos($v, '`')) {
                 $q = preg_split('! as !u', $v, 2);
@@ -252,7 +253,7 @@ class QuickPdoListInfoUtil
                 return $v;
             }
         }, $queryCols);
-        $s = implode(", ", $queryCols);
+        $s = implode("," . PHP_EOL, $queryCols);
         return $s;
     }
 
