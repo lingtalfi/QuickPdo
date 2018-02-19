@@ -228,7 +228,7 @@ class QuickPdoListInfoUtil
         $queryCols = array_map(function ($v) {
 
             if (false !== stripos($v, "concat")) {
-                return $v . PHPEO;
+                return $v . PHP_EOL;
             }
             if (false === strpos($v, '`')) {
                 $q = preg_split('! as !u', $v, 2);
