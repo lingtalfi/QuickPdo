@@ -265,6 +265,37 @@ and CONSTRAINT_TYPE = 'FOREIGN KEY'
     }
 
 
+    /**
+     * Return an array of
+     *
+     *  todo
+     *
+     */
+    public static function getReferencedKeysInfo($table, $schema = null, $useCache = true)
+    {
+        if (null === $schema) {
+            $schema = self::getDatabase();
+        }
+        $ric = QuickPdoInfoTool::getPrimaryKey($table, $schema, true);
+
+
+
+        foreach ($ric as $col) {
+
+            $all = QuickPdo::fetchAll("
+SELECT * 
+FROM information_schema.`KEY_COLUMN_USAGE` WHERE 
+`REFERENCED_TABLE_SCHEMA` LIKE '$schema' 
+AND `REFERENCED_TABLE_NAME` LIKE '$table' 
+AND `REFERENCED_COLUMN_NAME` LIKE '$col'            
+            ");
+            a($all);
+        }
+
+
+    }
+
+
     public static function getTables($db, $prefix = null)
     {
         QuickPdo::freeExec("use $db;");
