@@ -28,6 +28,7 @@ What are the new methods?
 - [getDatabases](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getdatabases)
 - [getDriver](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getdriver)
 - [getPrimaryKey](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getprimarykey)
+- [getReferencedKeysInfo](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#getReferencedKeysInfo)
 - [getTables](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md#gettables)
 
  
@@ -250,8 +251,27 @@ getForeignKeysInfo
 array    getForeignKeysInfo ( str:table, str:database=null )
 ```
 
-Return an array of foreignKey => [ referencedDatabase, referencedTable, referencedColumn ]
+Return an array of foreignKey => \[ referencedDatabase, referencedTable, referencedColumn \]
 
+
+
+
+
+getReferencedKeysInfo
+-------------
+2018-02-21
+
+
+```php
+array    getReferencedKeysInfo ( str:table, str:database=null )
+```
+
+Return an array of entries referencing the given schema.table.
+Each entry has the following structure:
+- 0: database
+- 1: table
+- 2: column
+ 
 
 
 

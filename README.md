@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.21.0 -- 2018-02-21
+
+    - add QuickPdoInfoTool::getReferencedKeysInfo method 
+    
 - 2.20.2 -- 2018-02-16
 
     - fix QuickPdoInfoTool::getPrimaryKey setting hasPrimaryKey flag erroneously 

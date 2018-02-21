@@ -266,32 +266,54 @@ and CONSTRAINT_TYPE = 'FOREIGN KEY'
 
 
     /**
-     * Return an array of
-     *
-     *  todo
+     * Return an array of entries referencing the given schema.table.
+     * Each entry has the following structure:
+     * - 0: database
+     * - 1: table
+     * - 2: column
      *
      */
-    public static function getReferencedKeysInfo($table, $schema = null, $useCache = true)
+    public static function getReferencedKeysInfo($table, $schema = null)
     {
+        $ret = [];
         if (null === $schema) {
             $schema = self::getDatabase();
         }
         $ric = QuickPdoInfoTool::getPrimaryKey($table, $schema, true);
 
 
-
         foreach ($ric as $col) {
 
             $all = QuickPdo::fetchAll("
-SELECT * 
+SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME 
 FROM information_schema.`KEY_COLUMN_USAGE` WHERE 
 `REFERENCED_TABLE_SCHEMA` LIKE '$schema' 
 AND `REFERENCED_TABLE_NAME` LIKE '$table' 
 AND `REFERENCED_COLUMN_NAME` LIKE '$col'            
             ");
-            a($all);
-        }
 
+            if (0 === count($ret)) {
+                $ret = $all;
+            } else {
+                foreach ($ret as $k => $info) {
+                    $isDead = true;
+
+                    foreach ($all as $challenger) {
+                        if (
+                            $challenger['TABLE_SCHEMA'] === $info['TABLE_SCHEMA'] &&
+                            $challenger['TABLE_NAME'] === $info['TABLE_NAME']
+                        ) {
+                            $isDead = false;
+                        }
+                    }
+                    if (true === $isDead) {
+                        unset($ret[$k]);
+                    }
+                    $ret[$k] = array_values($info);
+                }
+            }
+        }
+        return $ret;
 
     }
 
