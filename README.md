@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.21.1 -- 2018-02-21
+
+    - fix QuickPdoInfoTool::getReferencedKeysInfo not always returning the same array structure
+    
 - 2.21.0 -- 2018-02-21
 
     - add QuickPdoInfoTool::getReferencedKeysInfo method 

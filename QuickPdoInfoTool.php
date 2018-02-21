@@ -293,7 +293,13 @@ AND `REFERENCED_COLUMN_NAME` LIKE '$col'
             ");
 
             if (0 === count($ret)) {
-                $ret = $all;
+                foreach ($all as $info) {
+                    $ret[] = [
+                        $info['TABLE_SCHEMA'],
+                        $info['TABLE_NAME'],
+                        $info['COLUMN_NAME'],
+                    ];
+                }
             } else {
                 foreach ($ret as $k => $info) {
                     $isDead = true;
