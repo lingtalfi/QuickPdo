@@ -306,8 +306,8 @@ AND `REFERENCED_COLUMN_NAME` LIKE '$col'
 
                     foreach ($all as $challenger) {
                         if (
-                            $challenger['TABLE_SCHEMA'] === $info['TABLE_SCHEMA'] &&
-                            $challenger['TABLE_NAME'] === $info['TABLE_NAME']
+                            $challenger['TABLE_SCHEMA'] === $info[0] &&
+                            $challenger['TABLE_NAME'] === $info[1]
                         ) {
                             $isDead = false;
                         }
