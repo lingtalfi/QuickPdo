@@ -259,25 +259,6 @@ and CONSTRAINT_TYPE = 'FOREIGN KEY'
     }
 
 
-    protected static function getResolvedForeignKeyInfo(&$db = null, &$table = null, &$column = null)
-    {
-        $foreignKeys = self::getForeignKeysInfo($table, $db);
-        $max = 10;
-        $c = 0;
-        while (array_key_exists($column, $foreignKeys)) {
-            if ($c > $max) {
-                throw new QuickPdoException("Too much occurence");
-            }
-            $info = $foreignKeys[$column];
-            $db = $info[0];
-            $table = $info[1];
-            $column = $info[2];
-            $foreignKeys = self::getForeignKeysInfo($table, $db);
-            $c++;
-        }
-    }
-
-
     public static function getPrimaryKey($table, $schema = null, $returnAllIfEmpty = false, &$hasPrimaryKey = true)
     {
         if (null === $schema) {
@@ -386,6 +367,27 @@ AND `REFERENCED_COLUMN_NAME` LIKE '$col'
         return false;
     }
 
+
+    //--------------------------------------------
+    //
+    //--------------------------------------------
+    protected static function getResolvedForeignKeyInfo(&$db = null, &$table = null, &$column = null)
+    {
+        $foreignKeys = self::getForeignKeysInfo($table, $db);
+        $max = 10;
+        $c = 0;
+        while (array_key_exists($column, $foreignKeys)) {
+            if ($c > $max) {
+                throw new QuickPdoException("Too much occurence");
+            }
+            $info = $foreignKeys[$column];
+            $db = $info[0];
+            $table = $info[1];
+            $column = $info[2];
+            $foreignKeys = self::getForeignKeysInfo($table, $db);
+            $c++;
+        }
+    }
 
 
     //--------------------------------------------
