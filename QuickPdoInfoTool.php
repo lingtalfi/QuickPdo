@@ -259,7 +259,7 @@ and CONSTRAINT_TYPE = 'FOREIGN KEY'
     }
 
 
-    public static function getResolvedForeignKeyInfo(&$db = null, &$table = null, &$column = null)
+    protected static function getResolvedForeignKeyInfo(&$db = null, &$table = null, &$column = null)
     {
         $foreignKeys = self::getForeignKeysInfo($table, $db);
         $max = 10;
