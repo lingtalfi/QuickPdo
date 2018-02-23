@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.22.1 -- 2018-02-23
+
+    - fix QuickPdoInfoTool::getReferencedKeysInfo now returns a map of referenced key to foreign key
+    
 - 2.22.0 -- 2018-02-23
 
     - add QuickPdoInfoTool::getForeignKeysInfo's resolve argument

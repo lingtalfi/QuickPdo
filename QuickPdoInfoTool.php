@@ -286,7 +286,7 @@ and CONSTRAINT_TYPE = 'FOREIGN KEY'
      * Each entry has the following structure:
      * - 0: database
      * - 1: table
-     * - 2: column
+     * - 2: array of referenced column => foreign key column
      *
      */
     public static function getReferencedKeysInfo($table, $schema = null)
@@ -308,30 +308,18 @@ AND `REFERENCED_TABLE_NAME` LIKE '$table'
 AND `REFERENCED_COLUMN_NAME` LIKE '$col'            
             ");
 
-            if (0 === count($ret)) {
-                foreach ($all as $info) {
-                    $ret[] = [
-                        $info['TABLE_SCHEMA'],
-                        $info['TABLE_NAME'],
-                        $info['COLUMN_NAME'],
-                    ];
-                }
-            } else {
-                foreach ($ret as $k => $info) {
-                    $isDead = true;
 
-                    foreach ($all as $challenger) {
-                        if (
-                            $challenger['TABLE_SCHEMA'] === $info[0] &&
-                            $challenger['TABLE_NAME'] === $info[1]
-                        ) {
-                            $isDead = false;
-                        }
-                    }
-                    if (true === $isDead) {
-                        unset($ret[$k]);
-                    }
-                    $ret[$k] = array_values($info);
+            foreach ($all as $info) {
+                $info = array_values($info);
+                $id = $info[0] . '.' . $info[1];
+                if (!array_key_exists($id, $ret)) {
+                    $ret[$id] = [
+                        $info[0],
+                        $info[1],
+                        [$col => $info[2]],
+                    ];
+                } else {
+                    $ret[$id][2][$col] = $info[2];
                 }
             }
         }
