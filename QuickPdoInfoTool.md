@@ -248,10 +248,11 @@ getForeignKeysInfo
 
 
 ```php
-array    getForeignKeysInfo ( str:table, str:database=null )
+array    getForeignKeysInfo ( str:table, str:database=null, bool:resolve=false )
 ```
 
 Return an array of foreignKey => \[ referencedDatabase, referencedTable, referencedColumn \]
+If resolve is true, the foreign keys are resolved until their reference is NOT a foreign key itself.
 
 
 

@@ -551,6 +551,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.22.0 -- 2018-02-23
+
+    - add QuickPdoInfoTool::getForeignKeysInfo's resolve argument
+    
 - 2.21.2 -- 2018-02-21
 
     - fix QuickPdoInfoTool::getReferencedKeysInfo undefined indexes
