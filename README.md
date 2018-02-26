@@ -181,6 +181,34 @@ if (false !== ($lastId = QuickPdo::insert('mytable', [
 
 ```
 
+#### returning ric with insert
+
+By default, the insert method returns the last insert id.
+This is the fastest method.
+However, for tables which don't have auto-incremented keys, this might not be what you want.
+
+Instead, you might want to have the ric (array of cols => value identifying a unique row).
+This is what the fourth argument does. Set the fourth argument to true to return a ric from the insert method.
+ 
+```php
+a(QuickPdo::insert("di_group_has_page", [
+        "group_id" => 2,
+        "page_id" => 2,
+        "position" => '0',
+], '', true));
+
+
+
+// output...
+// array(2) {
+//   ["group_id"] => int(2)
+//   ["page_id"] => int(2)
+// }
+
+
+```
+
+
 ### Insert ignore
   
 ```php
@@ -194,6 +222,9 @@ if (false !== ($lastId = QuickPdo::insert('mytable', [
 }
 
 ```
+
+
+
 
 
 ### Delete
@@ -550,6 +581,10 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+    
+- 2.23.0 -- 2018-02-26
+
+    - add QuickPdo::insert optional fourth argument (returnRic)
     
 - 2.22.1 -- 2018-02-23
 

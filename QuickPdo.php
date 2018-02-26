@@ -154,7 +154,7 @@ class QuickPdo
      *
      *
      */
-    public static function insert($table, array $fields, $keyword = '')
+    public static function insert($table, array $fields, $keyword = '', $returnRic = false)
     {
 
         $protectTable = self::protectTable($table);
@@ -177,7 +177,23 @@ class QuickPdo
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
             self::onDataAlterAfter('insert', $query, $markers, $table);
-            return $pdo->lastInsertId();
+            if (false === $returnRic) {
+                return $pdo->lastInsertId();
+            } else {
+                $ai = QuickPdoInfoTool::getAutoIncrementedField($table);
+                if (false !== $ai) {
+                    return [
+                        $ai => $pdo->lastInsertId(),
+                    ];
+                } else {
+                    $ric = QuickPdoInfoTool::getPrimaryKey($table, null, true);
+                    $ret = [];
+                    foreach ($ric as $col) {
+                        $ret[$col] = $fields[$col];
+                    }
+                    return $ret;
+                }
+            }
         }
         self::handleStatementErrors($stmt, 'insert');
         return false;
