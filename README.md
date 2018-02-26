@@ -582,6 +582,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.23.1 -- 2018-02-26
+
+    - fix QuickPdo::insert fourth argument returning 0 with lastInsertId
+    
 - 2.23.0 -- 2018-02-26
 
     - add QuickPdo::insert optional fourth argument (returnRic)

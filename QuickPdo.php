@@ -180,10 +180,11 @@ class QuickPdo
             if (false === $returnRic) {
                 return $pdo->lastInsertId();
             } else {
+                $lastInsertId = $pdo->lastInsertId();
                 $ai = QuickPdoInfoTool::getAutoIncrementedField($table);
                 if (false !== $ai) {
                     return [
-                        $ai => $pdo->lastInsertId(),
+                        $ai => $lastInsertId,
                     ];
                 } else {
                     $ric = QuickPdoInfoTool::getPrimaryKey($table, null, true);
