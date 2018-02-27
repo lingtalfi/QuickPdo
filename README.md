@@ -582,6 +582,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.24.0 -- 2018-02-27
+
+    - add QuickPdoStmtTool::hasWhere method
+    
 - 2.23.1 -- 2018-02-26
 
     - fix QuickPdo::insert fourth argument returning 0 with lastInsertId

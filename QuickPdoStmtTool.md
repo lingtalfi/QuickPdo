@@ -311,6 +311,21 @@ array (size=1)
 
 
 
+### hasWhere
+
+
+```php
+bool function hasWhere ( str:query )
+```
+
+
+
+Returns whether or not the given query uses the where clause.
+
+
+
+
+
 ### simpleWhereToPdoWhere
 
 

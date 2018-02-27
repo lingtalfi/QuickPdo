@@ -15,6 +15,14 @@ class QuickPdoStmtTool
 {
 
 
+    public static function hasWhere($query)
+    {
+        if (preg_match('!\swhere\s!i', $query)) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * @param $query
      * @return string, the query minus the wildcards it potentially contains
