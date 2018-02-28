@@ -29,7 +29,20 @@ Methods
 ------------
 
 
+### addDateRangeToQuery
+2018-02-28
 
+
+
+```php
+void        public static function addDateRangeToQuery( str:&q, array:&markers = [], str:dateStart = null, str:dateEnd = null, str:dateCol = null)
+```
+
+Decorate the given query and markers to include the date range defined by dateStart and dateEnd.            
+
+ 
+ 
+ 
 ### addWhereSubStmt
 
 

@@ -582,6 +582,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.26.0 -- 2018-02-28
+
+    - migrate QuickPdoHelper::addDateRangeToQuery method to QuickPdoStmtTool::addDateRangeToQuery
+    
 - 2.25.0 -- 2018-02-28
 
     - add QuickPdoHelper::addDateRangeToQuery method
