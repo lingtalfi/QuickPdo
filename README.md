@@ -582,6 +582,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.26.1 -- 2018-03-09
+
+    - fix QuickPdoListInfoUtil::execute not treating query cols with parenthesis correctly
+    
 - 2.26.0 -- 2018-02-28
 
     - migrate QuickPdoHelper::addDateRangeToQuery method to QuickPdoStmtTool::addDateRangeToQuery

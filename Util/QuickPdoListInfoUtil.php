@@ -226,7 +226,13 @@ class QuickPdoListInfoUtil
     private static function getQueryColsAsString(array $queryCols)
     {
         $queryCols = array_map(function ($v) {
+            // we don't treat concat
             if (false !== stripos($v, "concat")) {
+                return $v;
+            }
+
+            // we don't treat statements containing parenthesis as well
+            if (false !== stripos($v, "(")) {
                 return $v;
             }
             if (false === strpos($v, '`')) {
