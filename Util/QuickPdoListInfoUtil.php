@@ -206,7 +206,7 @@ class QuickPdoListInfoUtil
 
 
         $q = sprintf($q, self::getQueryColsAsString($this->queryCols));
-
+az($q);
         $rows = QuickPdo::fetchAll($q, $markers);
         return [
             'rows' => $rows,

@@ -353,7 +353,7 @@ class QuickPdo
      * - SQLSTATE[42S02]: Base table or view not found: 1146 Table 'calendar.the_ev' doesn't exist
      * - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'dddescription'
      */
-    public static function fetchAll($query, array $markers = [], $fetchStyle = null)
+    public static function fetchAll($query, array $markers = [], $fetchStyle = null, &$rowCount = null)
     {
         $pdo = self::getConnection();
         self::$query = $query;
@@ -361,6 +361,9 @@ class QuickPdo
 
         $stmt = $pdo->prepare($query);
         if (true === $stmt->execute($markers)) {
+            if (null !== $rowCount) {
+                $rowCount = $stmt->rowCount();
+            }
             return $stmt->fetchAll((null !== $fetchStyle) ? $fetchStyle : self::$fetchStyle);
         }
         self::handleStatementErrors($stmt, 'fetchAll');
