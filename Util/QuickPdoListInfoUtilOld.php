@@ -4,7 +4,7 @@ namespace QuickPdo\Util;
 
 use QuickPdo\QuickPdo;
 
-class QuickPdoListInfoUtil
+class QuickPdoListInfoUtilOld
 {
     private $querySkeleton;
     private $queryCols;
@@ -14,14 +14,12 @@ class QuickPdoListInfoUtil
      */
     private $allowedSorts;
     private $allowedFilters;
-    private $having;
 
     public function __construct()
     {
         $this->querySkeleton = "";
         $this->queryCols = [];
         $this->realColumnMap = [];
-        $this->having = [];
         //
         $this->allowedFilters = null;
         $this->allowedSorts = null;
@@ -66,12 +64,6 @@ class QuickPdoListInfoUtil
         $this->realColumnMap = $realColumnMap;
         return $this;
     }
-
-    public function setHaving(array $having)
-    {
-        $this->having = $having;
-        return $this;
-    }
     //--------------------------------------------
     //
     //--------------------------------------------
@@ -101,20 +93,14 @@ class QuickPdoListInfoUtil
         if ($page < 1) {
             $page = 1;
         }
-        // FILTERING (WHERE AND HAVING)
+        // FILTERING
         //--------------------------------------------
         $realFilters = [];
-        $havingFilters = [];
         $symbolicFilters = [];
         if ($filters) {
             foreach ($filters as $col => $value) {
-                if ('' !== $value) {
-                    if (in_array($col, $this->having, true)) {
-                        $symbolicFilters[$col] = $value;
-                        $col = $this->getRealColumnName($col);
-                        $havingFilters[] = [$col, $value];
-                    }
-                    elseif (null === $allowedFilter || in_array($col, $allowedFilter, true)) {
+                if (null === $allowedFilter || in_array($col, $allowedFilter, true)) {
+                    if ('' !== $value) {
                         $symbolicFilters[$col] = $value;
                         $col = $this->getRealColumnName($col);
                         $realFilters[] = [$col, $value];
@@ -122,22 +108,50 @@ class QuickPdoListInfoUtil
                 }
             }
         }
-
         if ($realFilters) {
-            $this->addFilteringToQuery($q, $markers, $realFilters, "where");
+            if (false === stripos($q, 'where ')) {
+                $q .= " where ";
+            } else {
+                $q .= ' and ';
+            }
+            $c = 0;
+            foreach ($realFilters as $info) {
+                list($col, $value) = $info;
+                if (!is_array($col)) {
+                    $col = [$col];
+                }
+                if (0 !== $c) {
+                    $q .= " and ";
+                }
+                $marker = "mark$c";
+                $group = (count($col) > 1);
+                if ($group) {
+                    $q .= '(';
+                }
+                $counter = 0;
+                foreach ($col as $realColName) {
+                    if (true === $group && 0 !== $counter) {
+                        $q .= ' or ';
+                    }
+                    $z = explode(".", $realColName, 2);
+                    if (1 === count($z)) {
+                        $q .= "`$realColName` like :$marker";
+                    } else {
+                        $q .= $z[0] . ".`" . $z[1] . "` like :$marker";
+                    }
+                    $markers[$marker] = '%' . str_replace(['%', '_'], ['\%', '\_'], $value) . '%';
+                    $counter++;
+                }
+                if ($group) {
+                    $q .= ')';
+                }
+                $c++;
+            }
         }
-        if ($havingFilters) {
-            $this->addFilteringToQuery($q, $markers, $havingFilters, "having");
-        }
-
-
-        $queryColsAsString = self::getQueryColsAsString($this->queryCols);
-
         // COUNT QUERY
         //--------------------------------------------
-        $qCount = sprintf($q, $queryColsAsString);
-        $nbItems = 0;
-        QuickPdo::fetchAll($qCount, $markers, null, $nbItems);
+        $qCount = sprintf($q, 'count(*) as count');
+        $nbItems = (int)QuickPdo::fetch($qCount, $markers, \PDO::FETCH_COLUMN);
 
         // SORT
         //--------------------------------------------
@@ -191,7 +205,8 @@ class QuickPdoListInfoUtil
         }
 
 
-        $q = sprintf($q, $queryColsAsString);
+        $q = sprintf($q, self::getQueryColsAsString($this->queryCols));
+az($q);
         $rows = QuickPdo::fetchAll($q, $markers);
         return [
             'rows' => $rows,
@@ -253,47 +268,5 @@ class QuickPdoListInfoUtil
             return $this->realColumnMap[$column];
         }
         return $column;
-    }
-
-    private function addFilteringToQuery(&$q, array &$markers = [], array $filters = [], $type = "where")
-    {
-        if (false === stripos($q, $type . ' ')) {
-            $q .= " $type ";
-        } else {
-            $q .= ' and ';
-        }
-        $c = 0;
-        foreach ($filters as $info) {
-            list($col, $value) = $info;
-            if (!is_array($col)) {
-                $col = [$col];
-            }
-            if (0 !== $c) {
-                $q .= " and ";
-            }
-            $marker = "mark$c";
-            $group = (count($col) > 1);
-            if ($group) {
-                $q .= '(';
-            }
-            $counter = 0;
-            foreach ($col as $realColName) {
-                if (true === $group && 0 !== $counter) {
-                    $q .= ' or ';
-                }
-                $z = explode(".", $realColName, 2);
-                if (1 === count($z)) {
-                    $q .= "`$realColName` like :$marker";
-                } else {
-                    $q .= $z[0] . ".`" . $z[1] . "` like :$marker";
-                }
-                $markers[$marker] = '%' . str_replace(['%', '_'], ['\%', '\_'], $value) . '%';
-                $counter++;
-            }
-            if ($group) {
-                $q .= ')';
-            }
-            $c++;
-        }
     }
 }
