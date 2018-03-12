@@ -476,10 +476,10 @@ class QuickPdo
      */
     public static function transaction(callable $transactionCallback, callable $onException = null)
     {
+        $noError = true;
         if (false === self::$transactionActive) {
 
 
-            $noError = true;
             $conn = QuickPdo::getConnection();
             $currentMode = $conn->getAttribute(\PDO::ATTR_ERRMODE);
             QuickPdo::changeErrorMode(\PDO::ERRMODE_EXCEPTION);
@@ -497,12 +497,12 @@ class QuickPdo
                 }
             }
             QuickPdo::changeErrorMode($currentMode);
-            return $noError;
 
         } else {
             try {
                 call_user_func($transactionCallback);
             } catch (\Exception $e) {
+                $noError = false;
                 if (null !== $onException) {
                     if (is_callable($onException)) {
                         call_user_func($onException, $e);
@@ -512,6 +512,7 @@ class QuickPdo
                 }
             }
         }
+        return $noError;
     }
 
     //------------------------------------------------------------------------------/
