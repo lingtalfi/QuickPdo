@@ -113,8 +113,7 @@ class QuickPdoListInfoUtil
                         $symbolicFilters[$col] = $value;
                         $col = $this->getRealColumnName($col);
                         $havingFilters[] = [$col, $value];
-                    }
-                    elseif (null === $allowedFilter || in_array($col, $allowedFilter, true)) {
+                    } elseif (null === $allowedFilter || in_array($col, $allowedFilter, true)) {
                         $symbolicFilters[$col] = $value;
                         $col = $this->getRealColumnName($col);
                         $realFilters[] = [$col, $value];
@@ -136,6 +135,7 @@ class QuickPdoListInfoUtil
         // COUNT QUERY
         //--------------------------------------------
         $qCount = sprintf($q, $queryColsAsString);
+
         $nbItems = 0;
         QuickPdo::fetchAll($qCount, $markers, null, $nbItems);
 
@@ -193,6 +193,8 @@ class QuickPdoListInfoUtil
 
         $q = sprintf($q, $queryColsAsString);
         $rows = QuickPdo::fetchAll($q, $markers);
+//        a($q, $markers);
+//        az($rows);
         return [
             'rows' => $rows,
             'page' => $page,
@@ -257,6 +259,13 @@ class QuickPdoListInfoUtil
 
     private function addFilteringToQuery(&$q, array &$markers = [], array $filters = [], $type = "where")
     {
+
+        $markerName = "mark";
+        if ('where' !== $type) {
+            $markerName = "hark";
+        }
+
+
         if (false === stripos($q, $type . ' ')) {
             $q .= " $type ";
         } else {
@@ -271,7 +280,7 @@ class QuickPdoListInfoUtil
             if (0 !== $c) {
                 $q .= " and ";
             }
-            $marker = "mark$c";
+            $marker = $markerName . "$c";
             $group = (count($col) > 1);
             if ($group) {
                 $q .= '(';

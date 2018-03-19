@@ -582,6 +582,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.28.2 -- 2018-03-19
+
+    - fix QuickPdoListInfoUtil::execute method's conflicts with marker names in where and having clauses
+    
 - 2.28.1 -- 2018-03-12
 
     - fix QuickPdo::transaction's return consistency
