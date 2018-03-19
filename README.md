@@ -582,6 +582,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.29.0 -- 2018-03-19
+
+    - add QuickPdoListInfoUtil.setBetweens method
+    
 - 2.28.2 -- 2018-03-19
 
     - fix QuickPdoListInfoUtil::execute method's conflicts with marker names in where and having clauses

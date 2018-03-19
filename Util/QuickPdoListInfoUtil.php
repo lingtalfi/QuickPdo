@@ -8,6 +8,10 @@ class QuickPdoListInfoUtil
 {
     private $querySkeleton;
     private $queryCols;
+    /**
+     * @param array $realColumnMap
+     *      array of symbolicColName => realColName | arr:realColNames
+     */
     private $realColumnMap;
     /**
      * If null, means all columns allowed
@@ -15,6 +19,12 @@ class QuickPdoListInfoUtil
     private $allowedSorts;
     private $allowedFilters;
     private $having;
+    /**
+     * @var array of colName => between item, each of which having the following structure:
+     *      - 0: lowestBoundaryColName
+     *      - 1: highestBoundaryColName
+     */
+    private $betweens;
 
     public function __construct()
     {
@@ -22,6 +32,7 @@ class QuickPdoListInfoUtil
         $this->queryCols = [];
         $this->realColumnMap = [];
         $this->having = [];
+        $this->betweens = [];
         //
         $this->allowedFilters = null;
         $this->allowedSorts = null;
@@ -56,11 +67,7 @@ class QuickPdoListInfoUtil
         return $this;
     }
 
-    /**
-     * @param array $realColumnMap
-     *      array of symbolicColName => realColName | arr:realColNames
-     * @return $this
-     */
+
     public function setRealColumnMap(array $realColumnMap)
     {
         $this->realColumnMap = $realColumnMap;
@@ -72,6 +79,15 @@ class QuickPdoListInfoUtil
         $this->having = $having;
         return $this;
     }
+
+    public function setBetweens(array $betweens)
+    {
+        $this->betweens = $betweens;
+        return $this;
+    }
+
+
+
     //--------------------------------------------
     //
     //--------------------------------------------
@@ -93,8 +109,11 @@ class QuickPdoListInfoUtil
         $sort = $params['sort'];
 //        az($sort);
         $filters = $params['filters'];
+        $betweens = $this->betweens;
         $page = $params['page'];
         $nipp = (int)$params['nipp'];
+        $flatBetweens = $this->getFlattenedBetweens($betweens);
+
         //--------------------------------------------
         // REQUEST
         //--------------------------------------------
@@ -111,16 +130,21 @@ class QuickPdoListInfoUtil
                 if ('' !== $value) {
                     if (in_array($col, $this->having, true)) {
                         $symbolicFilters[$col] = $value;
-                        $col = $this->getRealColumnName($col);
-                        $havingFilters[] = [$col, $value];
+                        $filterItem = $this->getFilterItem($col, $value, $filters, $flatBetweens);
+                        if (false !== $filterItem) {
+                            $havingFilters[] = $filterItem;
+                        }
                     } elseif (null === $allowedFilter || in_array($col, $allowedFilter, true)) {
                         $symbolicFilters[$col] = $value;
-                        $col = $this->getRealColumnName($col);
-                        $realFilters[] = [$col, $value];
+                        $filterItem = $this->getFilterItem($col, $value, $filters, $flatBetweens);
+                        if (false !== $filterItem) {
+                            $realFilters[] = $filterItem;
+                        }
                     }
                 }
             }
         }
+
 
         if ($realFilters) {
             $this->addFilteringToQuery($q, $markers, $realFilters, "where");
@@ -132,10 +156,10 @@ class QuickPdoListInfoUtil
 
         $queryColsAsString = self::getQueryColsAsString($this->queryCols);
 
+
         // COUNT QUERY
         //--------------------------------------------
         $qCount = sprintf($q, $queryColsAsString);
-
         $nbItems = 0;
         QuickPdo::fetchAll($qCount, $markers, null, $nbItems);
 
@@ -274,6 +298,14 @@ class QuickPdoListInfoUtil
         $c = 0;
         foreach ($filters as $info) {
             list($col, $value) = $info;
+            $hasBetween = false;
+            $highestValue = null;
+            if (array_key_exists(2, $info)) {
+                $hasBetween = true;
+                $highestValue = $info[2];
+            }
+
+
             if (!is_array($col)) {
                 $col = [$col];
             }
@@ -292,11 +324,26 @@ class QuickPdoListInfoUtil
                 }
                 $z = explode(".", $realColName, 2);
                 if (1 === count($z)) {
-                    $q .= "`$realColName` like :$marker";
+                    if (false === $hasBetween) {
+                        $q .= "`$realColName` like :$marker";
+                        $markers[$marker] = $this->getMarkerValue($value);
+                    } else {
+                        $marker2 = $marker . "_alt";
+                        $q .= "`$realColName` between :$marker and :$marker2";
+                        $markers[$marker] = $this->getMarkerValue($value, true);
+                        $markers[$marker2] = $this->getMarkerValue($highestValue, true);
+                    }
                 } else {
-                    $q .= $z[0] . ".`" . $z[1] . "` like :$marker";
+                    if (false === $hasBetween) {
+                        $q .= $z[0] . ".`" . $z[1] . "` like :$marker";
+                        $markers[$marker] = $this->getMarkerValue($value);
+                    } else {
+                        $marker2 = $marker . "_alt";
+                        $q .= $z[0] . ".`" . $z[1] . "` between :$marker and :$marker2";
+                        $markers[$marker] = $this->getMarkerValue($value, true);
+                        $markers[$marker2] = $this->getMarkerValue($highestValue, true);
+                    }
                 }
-                $markers[$marker] = '%' . str_replace(['%', '_'], ['\%', '\_'], $value) . '%';
                 $counter++;
             }
             if ($group) {
@@ -304,5 +351,61 @@ class QuickPdoListInfoUtil
             }
             $c++;
         }
+    }
+
+    private function getFlattenedBetweens(array $betweens)
+    {
+        $ret = [];
+        foreach ($betweens as $between) {
+            $ret[] = $between[0];
+            $ret[] = $between[1];
+        }
+        return $ret;
+    }
+
+    private function getMarkerValue($value, $isBetween = false)
+    {
+        if (false === $isBetween) {
+            return '%' . str_replace(['%', '_'], ['\%', '\_'], $value) . '%';
+        }
+        return $value;
+    }
+
+
+    /**
+     * The goal of this method is to return a filterItem, which has one of the following forms:
+     *
+     * - [col, value]
+     * - [col, lowestValue, highestValue]
+     *
+     * The first form is used to make regular filters using "like".
+     * The second form is used to make filters using "between".
+     *
+     * If false is returned, this means that the column has already been treated (i.e. it's the highest boundary
+     * of a between, and the filter has been already treated when the method received the lowest boundary).
+     *
+     *
+     */
+    private function getFilterItem($col, $value, array $filters, array $flatBetweens)
+    {
+        $realColName = $this->getRealColumnName($col);
+        if (false === in_array($col, $flatBetweens, true)) {
+            return [$realColName, $value];
+        }
+
+        /**
+         * If it's a between, is it the lowest or highest boundary?
+         * We only treat the whole between when this is the lowest boundary,
+         * and we will then ignore the highest boundary when it comes up
+         */
+        foreach ($this->betweens as $between) {
+            if ($col === $between[0]) { // lowest boundary
+                $highest = $between[1];
+                $valueLowest = $value;
+                $valueHighest = $filters[$highest];
+                return [$realColName, $valueLowest, $valueHighest];
+            }
+        }
+        return false;
     }
 }
