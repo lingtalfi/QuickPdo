@@ -126,12 +126,11 @@ $util->setHaving([
     'shipping_country_iso_code',
 ]);
 
-$util->setBetweens([
-    [
-        "date_low",
-        "date_high",
-    ],
+$util->setOperators([
+    "date_low" => '>=',
+    "date_high" => '<=',
 ]);
+
 
 $params = [
     'sort' => [
@@ -145,5 +144,7 @@ $params = [
     ],
 ];
 $info = $util->execute($params);
+a($info);
+
 
 ```
