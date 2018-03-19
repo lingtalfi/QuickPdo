@@ -582,6 +582,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.30.0 -- 2018-03-19
+
+    - replaced QuickPdoListInfoUtil.setBetweens method by the more flexible setOperators method
+    
 - 2.29.0 -- 2018-03-19
 
     - add QuickPdoListInfoUtil.setBetweens method
