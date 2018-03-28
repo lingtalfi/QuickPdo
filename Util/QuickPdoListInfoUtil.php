@@ -19,6 +19,7 @@ class QuickPdoListInfoUtil
     private $allowedSorts;
     private $allowedFilters;
     private $having;
+    private $groupBy;
     /**
      * @var array of colName => operator
      */
@@ -30,6 +31,7 @@ class QuickPdoListInfoUtil
         $this->queryCols = [];
         $this->realColumnMap = [];
         $this->having = [];
+        $this->groupBy = [];
         $this->operators = [];
         //
         $this->allowedFilters = null;
@@ -69,6 +71,12 @@ class QuickPdoListInfoUtil
     public function setRealColumnMap(array $realColumnMap)
     {
         $this->realColumnMap = $realColumnMap;
+        return $this;
+    }
+
+    public function setGroupBy(array $groupBy)
+    {
+        $this->groupBy = $groupBy;
         return $this;
     }
 
@@ -144,6 +152,13 @@ class QuickPdoListInfoUtil
 
         if ($realFilters) {
             $this->addFilteringToQuery($q, $markers, $realFilters, "where");
+        }
+        //--------------------------------------------
+        // GROUP BY (unconditional)
+        //--------------------------------------------
+        if ($this->groupBy) {
+            $sGroupBy = implode(', ', $this->groupBy);
+            $q .= " group by $sGroupBy";
         }
         if ($havingFilters) {
             $this->addFilteringToQuery($q, $markers, $havingFilters, "having");
