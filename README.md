@@ -582,6 +582,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.30.1 -- 2018-03-28
+
+    - fix QuickPdoListInfoUtil sprintf function not adapted to inject fields in query
+    
 - 2.30.0 -- 2018-03-19
 
     - replaced QuickPdoListInfoUtil.setBetweens method by the more flexible setOperators method

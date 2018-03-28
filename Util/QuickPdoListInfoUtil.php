@@ -155,7 +155,7 @@ class QuickPdoListInfoUtil
 
         // COUNT QUERY
         //--------------------------------------------
-        $qCount = sprintf($q, $queryColsAsString);
+        $qCount = self::injectFields($q, $queryColsAsString);
         $nbItems = 0;
         QuickPdo::fetchAll($qCount, $markers, null, $nbItems);
 
@@ -211,7 +211,7 @@ class QuickPdoListInfoUtil
         }
 
 
-        $q = sprintf($q, $queryColsAsString);
+        $q = self::injectFields($q, $queryColsAsString);
         $rows = QuickPdo::fetchAll($q, $markers);
 //        a($q, $markers);
 //        az($rows);
@@ -350,5 +350,28 @@ class QuickPdoListInfoUtil
             $operator = $this->operators[$col];
         }
         return [$realColName, $value, $operator];
+    }
+
+
+    /**
+     *
+     * Note: sprintf was failing because once the query was this:
+     *
+     * $q = "select %s from `kamille`.`eut_user_tracker` h
+     * where 1
+     * and route='Core_service'
+     * and uri like '/service/Ekom/ecp/api?action=search.product&%'
+     * ";
+     *
+     *
+     * Notice that the last line ends with % which messes up with sprintf...
+     *
+     * @param $query
+     * @param $fields
+     * @return string
+     */
+    private static function injectFields($query, $fields)
+    {
+        return str_replace('%s', $fields, $query);
     }
 }
