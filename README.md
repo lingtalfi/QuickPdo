@@ -582,9 +582,13 @@ Then the results will look like this on the console:
 History Log
 ------------------
     
+- 2.31.1 -- 2018-04-01
+
+    - fix QuickPdo::transaction not being consistent with throwing an exception in case of error.
+
 - 2.31.0 -- 2018-03-28
 
-    - enhance QuickPdoListInfoUtil, now supports group by clause 
+    - enhance QuickPdoListInfoUtil, now supports group by clause
     
 - 2.30.1 -- 2018-03-28
 

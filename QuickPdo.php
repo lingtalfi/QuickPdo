@@ -464,7 +464,6 @@ class QuickPdo
      *
      * By default, if the transaction fails, an exception will be thrown (onException=null).
      * If you set onException to a callable, then your callable will be executed.
-     * With any other value for onException, the transaction will silently fail.
      *
      *
      *
@@ -492,9 +491,6 @@ class QuickPdo
             } catch (\Exception $e) {
                 $conn->rollBack();
                 $noError = false;
-                if (null !== $onException) {
-                    call_user_func($onException, $e);
-                }
             }
             QuickPdo::changeErrorMode($currentMode);
 
@@ -503,15 +499,16 @@ class QuickPdo
                 call_user_func($transactionCallback);
             } catch (\Exception $e) {
                 $noError = false;
-                if (null !== $onException) {
-                    if (is_callable($onException)) {
-                        call_user_func($onException, $e);
-                    }
-                } else {
-                    throw $e;
-                }
             }
         }
+        if (false === $noError) {
+            if (is_callable($onException)) {
+                call_user_func($onException, $e);
+            } else {
+                throw $e;
+            }
+        }
+
         return $noError;
     }
 
