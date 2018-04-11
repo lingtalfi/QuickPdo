@@ -13,6 +13,7 @@ class QuickPdoListInfoUtil
      *      array of symbolicColName => realColName | arr:realColNames
      */
     private $realColumnMap;
+    private $markers;
     /**
      * If null, means all columns allowed
      */
@@ -30,6 +31,7 @@ class QuickPdoListInfoUtil
         $this->querySkeleton = "";
         $this->queryCols = [];
         $this->realColumnMap = [];
+        $this->markers = [];
         $this->having = [];
         $this->groupBy = [];
         $this->operators = [];
@@ -71,6 +73,13 @@ class QuickPdoListInfoUtil
     public function setRealColumnMap(array $realColumnMap)
     {
         $this->realColumnMap = $realColumnMap;
+        return $this;
+    }
+
+
+    public function setMarkers(array $markers)
+    {
+        $this->markers = $markers;
         return $this;
     }
 
@@ -168,6 +177,16 @@ class QuickPdoListInfoUtil
         $queryColsAsString = self::getQueryColsAsString($this->queryCols);
 
 
+
+        //--------------------------------------------
+        // MARKERS
+        //--------------------------------------------
+        if ($this->markers) {
+            $markers = array_merge($markers, $this->markers);
+        }
+
+
+
         // COUNT QUERY
         //--------------------------------------------
         $qCount = self::injectFields($q, $queryColsAsString);
@@ -227,6 +246,9 @@ class QuickPdoListInfoUtil
 
 
         $q = self::injectFields($q, $queryColsAsString);
+
+
+
         $rows = QuickPdo::fetchAll($q, $markers);
 //        a($q, $markers);
 //        az($rows);
