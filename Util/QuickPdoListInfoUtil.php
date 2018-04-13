@@ -191,6 +191,7 @@ class QuickPdoListInfoUtil
         //--------------------------------------------
         $qCount = self::injectFields($q, $queryColsAsString);
         $nbItems = 0;
+//        az($qCount, $markers);
         QuickPdo::fetchAll($qCount, $markers, null, $nbItems);
 
         // SORT

@@ -328,8 +328,11 @@ AND `REFERENCED_COLUMN_NAME` LIKE '$col'
     }
 
 
-    public static function getTables($db, $prefix = null)
+    public static function getTables($db = null, $prefix = null)
     {
+        if (null === $db) {
+            $db = self::getDatabase();
+        }
         QuickPdo::freeExec("use $db;");
         $query = QuickPdo::getConnection()->query('show tables');
         $tables = $query->fetchAll(\PDO::FETCH_COLUMN);

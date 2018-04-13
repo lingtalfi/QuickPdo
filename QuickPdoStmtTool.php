@@ -123,6 +123,7 @@ class QuickPdoStmtTool
 
                 // if the previous cond was a glue, do not inject the "AND" keyword 
                 $previousWasGlue = false;
+
                 foreach ($whereConds as $cond) {
                     if (is_array($cond)) {
                         list($field, $op, $val) = $cond;

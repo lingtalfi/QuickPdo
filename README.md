@@ -582,6 +582,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
 
+- 2.33.0 -- 2018-04-13
+
+    - add QuickPdoHelper::executeFile method
+    
 - 2.32.0 -- 2018-04-11
 
     - enhance QuickPdoListInfoUtil, now supports user markers
