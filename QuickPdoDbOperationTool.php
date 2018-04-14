@@ -34,7 +34,7 @@ alter table $table AUTO_INCREMENT = 1;";
         self::truncateTables($allTables, $failedTables, $maxPass);
     }
 
-    
+
     public static function truncateTables(array $tablesToTruncate, array &$failedTables = [], int $maxPass = 3)
     {
         $tables = $tablesToTruncate;
@@ -42,7 +42,7 @@ alter table $table AUTO_INCREMENT = 1;";
 
             foreach ($tables as $table) {
                 try {
-                    QuickPdo::delete($table, []);
+                    self::truncate($table);
                 } catch (\Exception $e) {
                     $failedTables[] = $table;
                 }
