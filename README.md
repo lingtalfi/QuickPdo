@@ -583,6 +583,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
 
+- 2.36.1 -- 2018-04-14
+
+    - fix QuickPdoAlterTool::addColumn no default type
+
 - 2.36.0 -- 2018-04-14
 
     - add QuickPdoAlterTool::addColumn method

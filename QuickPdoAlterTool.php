@@ -17,6 +17,9 @@ class QuickPdoAlterTool
 
     public static function addColumn(string $table, string $column, string $columnType = null, string $after = null): bool
     {
+        if (null === $columnType) {
+            $columnType = "varchar";
+        }
         $q = "
 alter table $table 
 add column $column $columnType        
