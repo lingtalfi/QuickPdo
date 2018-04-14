@@ -361,3 +361,14 @@ string function stripWildcards ( str:query )
 
 Return the query minus the wildcards it potentially contains (by default: % and _).
 
+
+
+### tableHasColumn
+
+
+```php
+bool    tableHasColumn (string:table, string:column)
+```
+
+Return whether or not the table has the column.
+
