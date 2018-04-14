@@ -31,7 +31,13 @@ alter table $table AUTO_INCREMENT = 1;";
     public static function truncateDatabase($maxPass = 3, array &$failedTables = [], $db = null)
     {
         $allTables = QuickPdoInfoTool::getTables($db);
-        $tables = $allTables;
+        self::truncateTables($allTables, $failedTables, $maxPass);
+    }
+
+    
+    public static function truncateTables(array $tablesToTruncate, array &$failedTables = [], int $maxPass = 3)
+    {
+        $tables = $tablesToTruncate;
         for ($i = 1; $i <= $maxPass; $i++) {
 
             foreach ($tables as $table) {

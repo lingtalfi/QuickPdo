@@ -583,6 +583,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
 
+- 2.37.0 -- 2018-04-14
+
+    - add QuickPdoDbOperationTool::truncateTables method
+
 - 2.36.1 -- 2018-04-14
 
     - fix QuickPdoAlterTool::addColumn no default type

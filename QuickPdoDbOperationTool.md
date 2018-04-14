@@ -53,4 +53,14 @@ void  truncateDatabase ( int:maxPass = 3, array &failedTables = [], string:db = 
 Truncates a database.
 
 
+### truncateTables
+
+
+```php
+void  truncateTables ( array:tablesToTruncate, array:&failedTables = [], int:maxPass = 3 )
+```
+
+Truncates the given tables.
+
+
 
