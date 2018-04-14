@@ -582,6 +582,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
 
+- 2.34.0 -- 2018-04-14
+
+    - add QuickPdoDbOperationTool::truncateDatabase method
+
 - 2.33.0 -- 2018-04-13
 
     - add QuickPdoHelper::executeFile method

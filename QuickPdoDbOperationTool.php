@@ -26,4 +26,23 @@ alter table $table AUTO_INCREMENT = 1;";
         QuickPdo::freeQuery("DELETE FROM $table");
         QuickPdo::freeQuery("ALTER TABLE $table AUTO_INCREMENT = 1");
     }
+
+
+    public static function truncateDatabase($maxPass = 3, array &$failedTables = [], $db = null)
+    {
+        $allTables = QuickPdoInfoTool::getTables($db);
+        $tables = $allTables;
+        for ($i = 1; $i <= $maxPass; $i++) {
+
+            foreach ($tables as $table) {
+                try {
+                    QuickPdo::delete($table, []);
+                } catch (\Exception $e) {
+                    $failedTables[] = $table;
+                }
+            }
+            $tables = $failedTables;
+            $failedTables = [];
+        }
+    }
 }
