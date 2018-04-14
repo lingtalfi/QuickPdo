@@ -523,10 +523,11 @@ Want more?
 The QuickPdo planet includes some other classes that achieve various tasks:
 
 - [QuickPdoDbOperationTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoDbOperationTool.md): to perform various database operations
-- [QuickPdoInfoTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md): a general companion for QuickPdo 
+- [QuickPdoInfoTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoInfoTool.md): a general companion for QuickPdo
 - [QuickPdoStmtTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoStmtTool.md): to manipulate statements
 - [QuickPdoInfoCacheUtil](https://github.com/lingtalfi/QuickPdo/blob/master/Util/QuickPdoInfoCacheUtil.md): a caching wrapper for QuickPdoInfoTool
 - [QuickPdoListInfoUtil](https://github.com/lingtalfi/QuickPdo/blob/master/Util/QuickPdoListInfoUtil.md): a tool to generate the info necessary to display a list
+- [QuickPdoAlterTool](https://github.com/lingtalfi/QuickPdo/blob/master/QuickPdoAlterTool.md): a wrapper for the alter statements
 
 
 
@@ -581,6 +582,10 @@ Then the results will look like this on the console:
  
 History Log
 ------------------
+
+- 2.36.0 -- 2018-04-14
+
+    - add QuickPdoAlterTool::addColumn method
 
 - 2.35.0 -- 2018-04-14
 
