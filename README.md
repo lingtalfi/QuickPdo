@@ -583,6 +583,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
 
+- 2.38.0 -- 2018-04-20
+
+    - add QuickPdoStmtTool::prepareInString method
+    
 - 2.37.1 -- 2018-04-14
 
     - enhance QuickPdoDbOperationTool::truncateTables now also reset the auto increment

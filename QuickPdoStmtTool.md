@@ -337,6 +337,30 @@ Returns whether or not the given query uses the where clause.
 
 
 
+### prepareInString
+
+
+```php
+string function prepareInString ( array:strings, array:&markers = [], string:markerPrefix = null )
+```
+
+
+
+Helps you creating a query using an IN clause with string values.
+
+
+
+```php
+
+$references = ["abc", "d88e"];
+$markers = [];
+$sRef = QuickPdoStmtTool::prepareInString($references, $markers, 'ref');
+return QuickPdo::fetchAll("select reference, quantity from ek_product_reference where reference in ($sRef)", $markers, \PDO::FETCH_COLUMN | \PDO::FETCH_UNIQUE);
+```
+
+
+
+
 
 
 ### simpleWhereToPdoWhere
