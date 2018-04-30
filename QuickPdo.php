@@ -144,6 +144,10 @@ class QuickPdo
     }
 
     /**
+     *
+     * @param $table ,
+     *          now accepts the db.table notation
+     *
      * @return false|int, last insert id
      * Errors are accessible via a getError method
      *
@@ -157,8 +161,30 @@ class QuickPdo
     public static function insert($table, array $fields, $keyword = '', $returnRic = false)
     {
 
-        $protectTable = self::protectTable($table);
-        $query = 'insert ' . $keyword . ' into ' . $protectTable . ' set ';
+
+        /**
+         * Escaping the db and table.
+         * I know, the amount of code to do just that is ridiculous,
+         * that's why I put here just on the insert method for now.
+         */
+        if (false === strpos($table, '.')) {
+            $protectThing = self::protectThing($table);
+            $db = null;
+        } else {
+            $p = explode('.', $table);
+            $db = $p[0];
+            $table = $p[1];
+            if (0 === strpos($db, '`')) {
+                $db = substr($db, 1, -1);
+            }
+            if (0 === strpos($table, '`')) {
+                $table = substr($table, 1, -1);
+            }
+            $protectThing = self::protectThing($db) . "." . self::protectThing($table);
+        }
+
+
+        $query = 'insert ' . $keyword . ' into ' . $protectThing . ' set ';
         $first = true;
         $markers = [];
         foreach ($fields as $k => $v) {
@@ -181,13 +207,13 @@ class QuickPdo
                 return $pdo->lastInsertId();
             } else {
                 $lastInsertId = $pdo->lastInsertId();
-                $ai = QuickPdoInfoTool::getAutoIncrementedField($table);
+                $ai = QuickPdoInfoTool::getAutoIncrementedField($table, $db);
                 if (false !== $ai) {
                     return [
                         $ai => $lastInsertId,
                     ];
                 } else {
-                    $ric = QuickPdoInfoTool::getPrimaryKey($table, null, true);
+                    $ric = QuickPdoInfoTool::getPrimaryKey($table, $db, true);
                     $ret = [];
                     foreach ($ric as $col) {
                         $ret[$col] = $fields[$col];
@@ -208,8 +234,8 @@ class QuickPdo
      */
     public static function replace($table, array $fields, $keyword = '')
     {
-        $protectTable = self::protectTable($table);
-        $query = 'replace ' . $keyword . ' into ' . $protectTable . ' set ';
+        $protectThing = self::protectThing($table);
+        $query = 'replace ' . $keyword . ' into ' . $protectThing . ' set ';
         $first = true;
         $markers = [];
         foreach ($fields as $k => $v) {
@@ -274,9 +300,9 @@ class QuickPdo
      */
     public static function update($table, array $fields, $whereConds = [], array $extraMarkers = [])
     {
-        $protectTable = self::protectTable($table);
+        $protectThing = self::protectThing($table);
         $pdo = self::getConnection();
-        $query = 'update ' . $protectTable . ' set ';
+        $query = 'update ' . $protectThing . ' set ';
         $markers = [];
         $first = true;
         foreach ($fields as $k => $v) {
@@ -328,9 +354,9 @@ class QuickPdo
     public static function delete($table, $whereConds = [])
     {
 
-        $protectTable = self::protectTable($table);
+        $protectThing = self::protectThing($table);
         $pdo = self::getConnection();
-        $query = 'delete from ' . $protectTable;
+        $query = 'delete from ' . $protectThing;
         $markers = [];
         self::addWhereSubStmt($whereConds, $query, $markers);
         self::$query = $query;
@@ -571,7 +597,7 @@ class QuickPdo
         }
     }
 
-    private static function protectTable($table)
+    private static function protectThing($table)
     {
         return '`' . $table . '`';
     }

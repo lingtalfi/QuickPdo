@@ -583,6 +583,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
 
+- 2.39.0 -- 2018-04-30
+
+    - enhance QuickPdo::insert method's table argument, which now has a more permissive syntax
+
 - 2.38.0 -- 2018-04-20
 
     - add QuickPdoStmtTool::prepareInString method
