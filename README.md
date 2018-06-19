@@ -594,6 +594,10 @@ Then the results will look like this on the console:
 History Log
 ------------------
 
+- 2.41.0 -- 2018-06-19
+
+    - add QuickPdoStmtTool::likePrefix and likeSuffix methods
+
 - 2.40.1 -- 2018-06-08
 
     - fix QuickPdo::delete method not triggering the onDataAlterAfter inner method

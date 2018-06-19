@@ -96,6 +96,16 @@ class QuickPdoStmtTool
         return "%" . self::stripWildcards($field) . "%";
     }
 
+    public static function likePrefix(string $field)
+    {
+        return self::stripWildcards($field) . "%";
+    }
+
+    public static function likeSuffix(string $field)
+    {
+        return "%" . self::stripWildcards($field);
+    }
+
 
     /**
      * @param $query

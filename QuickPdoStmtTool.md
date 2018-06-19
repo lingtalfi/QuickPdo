@@ -360,6 +360,32 @@ where ville like :city
 ``` 
 
 
+### likePrefix
+
+
+```php
+string function likePrefix ( str:field )
+```
+
+
+Returns the field ending with the `%` wildcard, and the % and _ chars inside the
+fields are escaped. See like method for an example
+
+
+### likeSuffix
+
+
+```php
+string function likeSuffix ( str:field )
+```
+
+
+Returns the field starting with the `%` wildcard, and the % and _ chars inside the
+fields are escaped. See like method for an example
+
+
+
+
 
 ### prepareInString
 
