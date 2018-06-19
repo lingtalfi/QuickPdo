@@ -360,7 +360,6 @@ class QuickPdo
         $markers = [];
         self::addWhereSubStmt($whereConds, $query, $markers);
         self::$query = $query;
-        az($query);
         self::onQueryReady('delete', $query, $markers, $table, $whereConds);
 
         $stmt = $pdo->prepare($query);
