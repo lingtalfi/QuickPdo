@@ -257,6 +257,14 @@ if (false !== ($n = QuickPdo::delete('superusers', [
 
 ```
 
+
+```php
+QuickPdo::delete("ek_discount", [
+    "id in (34)"
+]); 
+// delete from `ek_discount` WHERE id in (34)
+```
+
   
 ### Update 
 
