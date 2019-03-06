@@ -20,7 +20,7 @@ Example
 
 
 use Core\Services\A;
-use QuickPdo\Util\QuickPdoListInfoUtil;
+use Ling\QuickPdo\Util\QuickPdoListInfoUtil;
 
 // using kamille framework here (https://github.com/lingtalfi/kamille)
 require_once __DIR__ . "/../boot.php";
@@ -58,7 +58,7 @@ az($info);
 
 
 use Core\Services\A;
-use QuickPdo\Util\QuickPdoListInfoUtil;
+use Ling\QuickPdo\Util\QuickPdoListInfoUtil;
 
 
 // using kamille framework here (https://github.com/lingtalfi/kamille)

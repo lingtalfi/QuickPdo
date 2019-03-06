@@ -1,8 +1,8 @@
 <?php
 
-namespace QuickPdo;
+namespace Ling\QuickPdo;
 
-use QuickPdo\Exception\QuickPdoException;
+use Ling\QuickPdo\Exception\QuickPdoException;
 
 
 /**

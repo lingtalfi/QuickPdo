@@ -63,7 +63,7 @@ The whereConds parameter uses the [**QuickPdo WHERE notation**](https://github.c
 <?php
 
 
-use QuickPdo\QuickPdoStmtTool;
+use Ling\QuickPdo\QuickPdoStmtTool;
 
 require_once "bigbang.php"; // start the local universe 
 
@@ -104,7 +104,7 @@ array (size=4)
 <?php
 
 
-use QuickPdo\QuickPdoStmtTool;
+use Ling\QuickPdo\QuickPdoStmtTool;
 
 require_once "bigbang.php"; // start the local universe 
 
@@ -149,7 +149,7 @@ array (size=4)
 <?php
 
 
-use QuickPdo\QuickPdoStmtTool;
+use Ling\QuickPdo\QuickPdoStmtTool;
 
 require_once "bigbang.php"; // start the local universe 
 
@@ -183,7 +183,7 @@ array (size=0)
 <?php
 
 
-use QuickPdo\QuickPdoStmtTool;
+use Ling\QuickPdo\QuickPdoStmtTool;
 
 require_once "bigbang.php"; // start the local universe 
 
@@ -238,7 +238,7 @@ This method adds the WHERE clause to your statement, but using only the **equal 
 <?php
 
 
-use QuickPdo\QuickPdoStmtTool;
+use Ling\QuickPdo\QuickPdoStmtTool;
 
 require_once "bigbang.php"; // start the local universe 
 
@@ -290,7 +290,7 @@ array (size=4)
 <?php
 
 
-use QuickPdo\QuickPdoStmtTool;
+use Ling\QuickPdo\QuickPdoStmtTool;
 
 require_once "bigbang.php"; // start the local universe 
 

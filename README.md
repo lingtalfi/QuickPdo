@@ -15,7 +15,7 @@ Install
 ==========
 Using the [uni](https://github.com/lingtalfi/universe-naive-importer) command.
 ```bash
-uni import QuickPdo
+uni import Ling/QuickPdo
 ```
 
 
@@ -141,7 +141,7 @@ where ville like :city
 <?php
 
 
-use QuickPdo\QuickPdo;
+use Ling\QuickPdo\QuickPdo;
 
 require_once "bigbang.php"; // start the local universe
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace QuickPdo;
+namespace Ling\QuickPdo;
 
 /*
  * LingTalfi 2016-02-12

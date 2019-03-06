@@ -1,10 +1,10 @@
 <?php
 
 
-namespace QuickPdo\Helper;
+namespace Ling\QuickPdo\Helper;
 
 
-use QuickPdo\QuickPdo;
+use Ling\QuickPdo\QuickPdo;
 
 class QuickPdoHelper
 {

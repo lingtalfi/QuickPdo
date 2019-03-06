@@ -49,8 +49,8 @@ Here is a quick overview example:
 <?php
 
 
-use QuickPdo\QuickPdo;
-use QuickPdo\QuickPdoInfoTool;
+use Ling\QuickPdo\QuickPdo;
+use Ling\QuickPdo\QuickPdoInfoTool;
 
 
 require_once "bigbang.php";

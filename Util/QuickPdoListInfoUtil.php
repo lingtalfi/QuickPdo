@@ -1,8 +1,8 @@
 <?php
 
-namespace QuickPdo\Util;
+namespace Ling\QuickPdo\Util;
 
-use QuickPdo\QuickPdo;
+use Ling\QuickPdo\QuickPdo;
 
 class QuickPdoListInfoUtil
 {

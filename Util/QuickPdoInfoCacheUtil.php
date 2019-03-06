@@ -1,9 +1,9 @@
 <?php
 
-namespace QuickPdo\Util;
+namespace Ling\QuickPdo\Util;
 
-use Bat\FileSystemTool;
-use QuickPdo\QuickPdoInfoTool;
+use Ling\Bat\FileSystemTool;
+use Ling\QuickPdo\QuickPdoInfoTool;
 
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace QuickPdo\Exception;
+namespace Ling\QuickPdo\Exception;
 
 /*
  * LingTalfi 2016-02-12
